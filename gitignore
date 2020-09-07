@@ -1,0 +1,3 @@
+__pycache__/
+venv/
+trello_cache.sqlite
