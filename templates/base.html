@@ -89,7 +89,15 @@ body.index div.sidebar div.posts {
     </div>
 </div>
 <div class="row mb-4">
-    <div class="col-sm main-menu sidebar no-mob">
+    <div class="col-sm-6 content">
+        <div class="content-header mb-4">
+            {% block header %}{% endblock %}
+        </div>
+        <div class="content-body">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+        <div class="col-sm main-menu sidebar no-mob">
 
         <div class="pages">
 
@@ -137,14 +145,6 @@ body.index div.sidebar div.posts {
 </ul>
 </div>
 
-    </div>
-    <div class="col-sm-6 content">
-        <div class="content-header mb-4">
-            {% block header %}{% endblock %}
-        </div>
-        <div class="content-body">
-            {% block content %}{% endblock %}
-        </div>
     </div>
     <div class="col-sm content_menu sidebar">
         <!-- links -->
