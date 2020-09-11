@@ -12,6 +12,14 @@
 
     <title>{% block main_title %}{% endblock %}Dandelion</title>
     <style type="text/css">
+        
+        @media only screen and (max-width: 992px) {
+            .no-mob {
+                display: none;
+            }
+        }
+
+        
     * {
         font-family: 'Livvic', sans-serif;
         color: #3B4252;
@@ -81,7 +89,7 @@ body.index div.sidebar div.posts {
     </div>
 </div>
 <div class="row mb-4">
-    <div class="col-sm main-menu sidebar">
+    <div class="col-sm main-menu sidebar no-mob">
 
         <div class="pages">
 
