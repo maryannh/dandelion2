@@ -77,6 +77,7 @@ def create_loop(content_type):
             }
         item_loop.append(info)
     return item_loop
+    
 
 def get_all_cards():
     """ for debugging """
