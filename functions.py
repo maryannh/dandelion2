@@ -34,13 +34,26 @@ def all_content_ids(content_type):
                 items.append(item_id)
     return items
 
+def imported_ids(content_type):
+    """ gets a list of Trello IDs of all the content already in Mongo """
+    content = list(db.content.find({"type": content_type }))
+    ids = []
+    for item in content:
+        ids.append(item["item_id"])
+    return ids
+
+def ids_to_import(content_type):
+    """ gets a list of Trello IDs of all the content that needs to be imported """
+    all_ids = all_content_ids(content_type)
+    return list(set(all_content_ids("link")) - set(imported_ids("link")))
+
 def add_to_db(content_type):
     """ add content to Mongo DB """
     payload = {
         'key': config.TRELLO_KEY,
         'token': config.TRELLO_TOKEN,
         }
-    items = all_content_ids(content_type)
+    items = ids_to_import(content_type) # will be replaced with get_ids_to_import
     item_loop = []
     for item_id in items:
         # content
