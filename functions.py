@@ -83,6 +83,7 @@ def add_to_db(content_type):
             }
         # add to db
         post_id = db.content.insert_one(info).inserted_id
-        print(post_id)
+        print(post_id + " " + content_type)
         
 add_to_db("link")
+add_to_db("post")
