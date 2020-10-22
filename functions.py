@@ -83,4 +83,4 @@ def add_to_db(content_type):
             }
         # add to db
         post_id = db.content.insert_one(info).inserted_id
-        print str(post_id) + " " + str(content_type))
+        print(str(post_id) + " " + str(content_type))
