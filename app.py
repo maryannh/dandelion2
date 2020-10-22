@@ -5,6 +5,7 @@ import mistune
 from dateutil.parser import parse
 import os
 import config
+from functions import add_to_db
 
 app = Flask(__name__)
 
@@ -98,6 +99,14 @@ def index():
     link_loop = create_loop("link")
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
+
+@app.route("/cron")
+def cron():
+    add_to_db("post")
+    add_to_db("link")
+    add_to_db("download")
+    add_to_db("page")
+    return render_template("cron.html")
 
 @app.route("/post/<post_id>")
 def post(post_id):

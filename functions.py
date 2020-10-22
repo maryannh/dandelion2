@@ -45,7 +45,7 @@ def imported_ids(content_type):
 def ids_to_import(content_type):
     """ gets a list of Trello IDs of all the content that needs to be imported """
     all_ids = all_content_ids(content_type)
-    return list(set(all_content_ids("link")) - set(imported_ids("link")))
+    return list(set(all_content_ids(content_type)) - set(imported_ids(content_type)))
 
 def add_to_db(content_type):
     """ add content to Mongo DB """
@@ -53,7 +53,7 @@ def add_to_db(content_type):
         'key': config.TRELLO_KEY,
         'token': config.TRELLO_TOKEN,
         }
-    items = ids_to_import(content_type) # will be replaced with get_ids_to_import
+    items = ids_to_import(content_type)
     item_loop = []
     for item_id in items:
         # content
@@ -83,7 +83,4 @@ def add_to_db(content_type):
             }
         # add to db
         post_id = db.content.insert_one(info).inserted_id
-        print(post_id + " " + content_type)
-        
-add_to_db("link")
-add_to_db("post")
+        print str(post_id) + " " + str(content_type))
