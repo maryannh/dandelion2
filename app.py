@@ -180,5 +180,5 @@ def download(download_id):
         date_text=date_text, link_loop=link_loop, post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, download_id=download_id)
 
-# if __name__ == '__main__':
-    # app.run(debug=True, host='0.0.0.0')
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')

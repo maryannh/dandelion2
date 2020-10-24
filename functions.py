@@ -4,6 +4,7 @@ from dateutil.parser import parse
 import requests
 from pymongo import MongoClient
 import datetime
+import dns
 
 client = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority")
 db = client.blog
