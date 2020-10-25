@@ -108,6 +108,14 @@ def cron():
     add_to_db("page")
     return render_template("cron.html")
 
+@app.route("/post1/<post_id>")
+def post1(post_id):
+    # header
+    # attachment
+    # date
+    # content
+    return render_template("post.html")
+
 @app.route("/post/<post_id>")
 def post(post_id):
     payload = {
