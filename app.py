@@ -45,7 +45,7 @@ def post(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": post_id})
     text = markdown(info["text"])
-    return render_template("post.html", info=info, text=text, date=date)
+    return render_template("post.html", info=info, text=text)
 
 @app.route("/page/<page_id>")
 def page(page_id):
