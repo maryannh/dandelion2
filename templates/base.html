@@ -109,7 +109,7 @@ body.index div.sidebar div.posts {
     <h5>Downloads</h5>
     <ul class="list-unstyled">
         {% for download in download_loop %}
-        <li class="mb-2"><a href="{{ config.BASE_URL }}/downloads/{{ download["item_id"] }}">{{ download["title"] }}</a></li>
+        <li class="mb-2"><a href="{{ config.BASE_URL }}/download/{{ download["item_id"] }}">{{ download["title"] }}</a></li>
         {% endfor %}
     </ul>
 </div>
