@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 app.config.from_pyfile('config.py', silent=True)
 
-client = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority")
+client = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False)
 db = client.blog
 
 markdown = mistune.Markdown()
