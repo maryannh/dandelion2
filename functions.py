@@ -8,9 +8,6 @@ import dns
 import json
 from validator_collection import validators, checkers
 
-client = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority")
-db = client.blog
-
 def all_content_ids(content_type):
     """ get short ids of all active content """
     if content_type == "post":
@@ -39,6 +36,7 @@ def all_content_ids(content_type):
 
 def imported_ids(content_type):
     """ gets a list of Trello IDs of all the content already in Mongo """
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     content = list(db.content.find({"type": content_type }))
     ids = []
     for item in content:
@@ -81,6 +79,7 @@ def get_credits(item_id):
 
 def add_to_db(content_type):
     """ add content to Mongo DB """
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     payload = {
         'key': config.TRELLO_KEY,
         'token': config.TRELLO_TOKEN,

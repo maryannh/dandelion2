@@ -11,13 +11,11 @@ app = Flask(__name__)
 
 app.config.from_pyfile('config.py', silent=True)
 
-client = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False)
-db = client.blog
-
 markdown = mistune.Markdown()
 
 @app.route("/")
 def index():
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     post_loop = list(db.content.find({
         "type": "post"
     }).sort("date", -1))
@@ -35,6 +33,7 @@ def index():
 
 @app.route("/cron")
 def cron():
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     add_to_db("post")
     add_to_db("link")
     add_to_db("download")
@@ -43,6 +42,7 @@ def cron():
 
 @app.route("/post/<post_id>")
 def post(post_id):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": post_id})
     text = markdown(info["text"])
     dt = parse(info["date"])
@@ -51,12 +51,14 @@ def post(post_id):
 
 @app.route("/page/<page_id>")
 def page(page_id):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])
     return render_template("page.html", info=info, text=text)
 
 @app.route("/download/<page_id>")
 def download(page_id):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])
     return render_template("page.html", info=info, text=text)
