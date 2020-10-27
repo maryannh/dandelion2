@@ -11,7 +11,7 @@
 
 {% block content %}
 
-{% for post in (post_loop|sort(attribute='date', reverse = True))[:10] %}
+{% for post in post_loop %}
 <div class="row loop mb-4">
 <div class="col-3 image">
     <a href="{{ config.BASE_URL }}/post/{{ post["item_id"] }}">
@@ -23,7 +23,7 @@
     <a href="{{ config.BASE_URL }}/post/{{ post["item_id"] }}">
         {{ post["title"] }}
     </a>
-    <small>{{ post.date.strftime('%-d %B %Y') }}</small>
+    <small>{{ post["date"] }}</small>
     </h4>
 </div>
 </div>

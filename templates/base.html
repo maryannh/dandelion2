@@ -99,50 +99,18 @@ body.index div.sidebar div.posts {
     </div>
         <div class="col-sm main-menu sidebar">
 
-        <div class="pages">
-
-    <!-- pages -->
-{% for page in page_loop %}
-<h5>
-    {% if active_page != page["item_id"] %}
-        <a href="{{ config.BASE_URL }}/page/{{ page["item_id"] }}">
-    {% endif %}
-        {{ page["title"] }}
-    {% if active_page != page["item_id"] %}
-        </a>
-    {% endif %}
-</h5>
-{% endfor %}
-</div>
-<div class="posts">
-<!-- latest posts -->
-<h5>Latest Posts</h5>
-
-
-{% for post in (post_loop|sort(attribute='date', reverse = True))[:10] %}
-
-{% if active_page != post["item_id"] %}
-<h6 class="mb-4">
-    <a href="{{ config.BASE_URL }}/page/{{ post["item_id"] }}">
-    {{ post["title"] }}
-    </a>
-    ({{ post.date.strftime('%-d %B %Y') }})
-    </h6>
-{% endif %}
-
-{% endfor %}
-</div>
+<!--- Add this back when more than one page 
+<div class="pages">
+    <h5>Pages</h5>
+    {{ page_loop }}
+</div> -->
+            
 <div class="downloads">
-<h5>Downloads</h5>
-<!-- downloads -->
-<ul>
-{% for download in (download_loop|sort(attribute='date', reverse = True))[:10] %}
-
-{% if active_page != download["item_id"] %}
-<li><a href="{{ config.BASE_URL }}/download/{{ download["item_id"] }}">{{ download["title"] }}</a> ({{ download.date.strftime('%-d %B %Y') }})</li>
-{% endif %}
-{% endfor %}
-</ul>
+    <h5>Downloads</h5>
+    <ul>
+        {% for do 
+        <li></li>
+    </ul>
 </div>
 
     </div>
@@ -151,10 +119,7 @@ body.index div.sidebar div.posts {
         <div class="links">
 <h5>Latest Links</h5>
 <p>Links with &#10036; contain topical information that you might want to check out.</p>
-{% for link in (link_loop|sort(attribute='date', reverse = True))[:10] %}
-<h6 class="mb-4"><a href="{{ link["text"] }}">{{ link["title"] }}</a> ({{ link.date.strftime('%-d %B %Y') }})</h6>
-
-{% endfor %}
+{{ link_loop["title"] }}
 </div>
     </div>
   </div>

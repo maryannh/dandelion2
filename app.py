@@ -82,7 +82,6 @@ def create_loop(content_type):
             }
         item_loop.append(info)
     return item_loop
-    
 
 def get_all_cards():
     """ for debugging """
@@ -95,12 +94,23 @@ def get_all_cards():
     return r.json()
 
 
+
+
+
 @app.route("/")
 def index():
-    post_loop = create_loop("post")
-    page_loop = create_loop("page")
-    download_loop = create_loop("download")
-    link_loop = create_loop("link")
+    post_loop = list(db.content.find({
+        "type": "post"
+    }))
+    page_loop = list(db.content.find({
+        "type": "page"
+    }))
+    download_loop = list(db.content.find({
+        "type": "download"
+    }))
+    link_loop = list(db.content.find({
+        "type": "link"
+    }))
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
 
@@ -112,43 +122,13 @@ def cron():
     add_to_db("page")
     return render_template("cron.html")
 
-@app.route("/post1/<post_id>")
-def post1(post_id):
+@app.route("/post/<post_id>")
+def post(post_id):
     info = db.content.find_one({"item_id": post_id})
     text = markdown(info["text"])
     dt = parse(info["date"])
     date = dt.date().strftime("%-d %B %Y")
-    return render_template("post1.html", info=info, text=text, date=date)
-
-@app.route("/post/<post_id>")
-def post(post_id):
-    payload = {
-        'key': config.TRELLO_KEY,
-        'token': config.TRELLO_TOKEN,
-        }
-    # content
-    content_url = "https://api.trello.com/1/cards/" + post_id
-    content_r = requests.get(content_url, params=payload)
-    content = content_r.json()
-    text = markdown(content.get("desc", "NA"))
-    dt = parse(content.get("due", "NA"))
-    date_text = dt.date().strftime("%-d %B %Y")
-    # attachments
-    attachments_url = "https://api.trello.com/1/cards/" + post_id + "/attachments"
-    attachments_r = requests.get(attachments_url, params=payload)
-    attachments = attachments_r.json()
-    # meta
-    meta_url = "https://api.trello.com/1/cards/" + post_id + "/customFieldItems"
-    meta_r = requests.get(meta_url, params=payload)
-    meta = meta_r.json()
-    page_loop = create_loop("page")
-    post_loop = create_loop("post")
-    link_loop = create_loop("link")
-    download_loop = create_loop("download")
-    return render_template("post.html", page_loop=page_loop, content=content,
-        attachments=attachments, meta=meta, text=text, date_text=date_text,
-        link_loop=link_loop, post_loop=post_loop, download_loop=download_loop,
-        post_id=post_id)
+    return render_template("post.html", info=info, text=text, date=date)
 
 @app.route("/page/<page_id>")
 def page(page_id):

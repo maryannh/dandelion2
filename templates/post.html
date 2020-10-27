@@ -2,7 +2,7 @@
 {% set active_page = post_id %}
 
 {% block main_title %}
-    {{ content["name"] }} -
+    {{ info["title"] }} -
 {% endblock %}
 
 
@@ -11,24 +11,22 @@
 {% endblock %}
 
 {% block header %}
-    <h2>
-        {{ content["name"] }}
-        <small>{{ date_text }}</small>
-    </h2>
-    <img src="{{ attachments[0]["url"] }}" class="img-fluid rounded border" alt="{{ content["name"] }}">
-    {% if meta[0]["value"]["text"] %}
+    
+    <img src="{{ info["image"] }}" class="img-fluid rounded border" alt="{{ info["title"] }}">
+    
         <small>
-            Photo by <a href="{{ meta[0]["value"]["text"] }}">{{ meta[1]["value"]["text"] }}</a>
+            <a href="{{ info["credits"]["url"] }}">{{ info["credits"]["name"] }}</a>
         </small>
-    {% endif %}
+    
+    <h2>
+        {{ info["title"] }}
+        <small>{{ date }}</small>
+    </h2>
+    
     
 {% endblock %}
 
-
-
-
 {% block content %}
-    {{ info }}
+    {{ text|safe }}
     
-{{ text|safe }}
 {% endblock %}
