@@ -5,12 +5,16 @@ import mistune
 from dateutil.parser import parse
 import os
 import config
+from pymongo import MongoClient
+import datetime
 from functions import add_to_db
 
 app = Flask(__name__)
 
 app.config.from_pyfile('config.py', silent=True)
 
+client = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority")
+db = client.blog
 
 requests_cache.install_cache('trello_cache', backend='sqlite', expire_after=300)
 
@@ -110,11 +114,11 @@ def cron():
 
 @app.route("/post1/<post_id>")
 def post1(post_id):
-    # header
-    # attachment
-    # date
-    # content
-    return render_template("post.html")
+    info = db.content.find_one({"item_id": post_id})
+    text = markdown(info["text"])
+    dt = parse(info["date"])
+    date = dt.date().strftime("%-d %B %Y")
+    return render_template("post1.html", info=info, text=text, date=date)
 
 @app.route("/post/<post_id>")
 def post(post_id):

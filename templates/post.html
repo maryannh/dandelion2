@@ -21,11 +21,14 @@
             Photo by <a href="{{ meta[0]["value"]["text"] }}">{{ meta[1]["value"]["text"] }}</a>
         </small>
     {% endif %}
+    
 {% endblock %}
 
 
 
 
 {% block content %}
+    {{ info }}
+    
 {{ text|safe }}
 {% endblock %}
