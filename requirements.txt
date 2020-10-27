@@ -1,4 +1,5 @@
 asn1crypto==0.24.0
+attrs==20.2.0
 certifi==2020.6.20
 chardet==3.0.4
 click==7.1.2
@@ -6,15 +7,20 @@ cryptography==2.6.1
 dnspython==1.16.0
 entrypoints==0.3
 Flask==1.1.2
+gunicorn==20.0.4
 idna==2.10
+importlib-metadata==2.0.0
 itsdangerous==1.1.0
 Jinja2==2.11.2
+jsonschema==3.2.0
 keyring==17.1.1
 keyrings.alt==3.1.1
 MarkupSafe==1.1.1
 mistune==0.8.4
 pycrypto==2.6.1
-pymongo[tls,srv]==3.11.0
+PyGObject==3.30.4
+pymongo==3.11.0
+pyrsistent==0.17.3
 python-dateutil==2.8.1
 pyxdg==0.25
 requests==2.24.0
@@ -22,4 +28,6 @@ requests-cache==0.5.2
 SecretStorage==2.3.1
 six==1.12.0
 urllib3==1.25.10
+validator-collection==1.5.0
 Werkzeug==1.0.1
+zipp==3.4.0
