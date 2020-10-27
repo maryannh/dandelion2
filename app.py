@@ -3,7 +3,6 @@ import requests
 import mistune
 import config
 from pymongo import MongoClient
-from dateutil.parser import parse
 import pymongo
 import datetime
 from functions import add_to_db
@@ -46,8 +45,6 @@ def post(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": post_id})
     text = markdown(info["text"])
-    dt = parse(info["date"])
-    date = dt.date().strftime("%-d %B %Y")
     return render_template("post.html", info=info, text=text, date=date)
 
 @app.route("/page/<page_id>")
