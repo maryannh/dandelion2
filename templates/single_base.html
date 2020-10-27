@@ -80,12 +80,16 @@ body.index div.sidebar div.posts {
             </small>
         </h1>
         <hr>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="{{ url_for('index') }}">Home</a><li>
+            <li class="list-inline-item"><a href="{{ url_for('index') }}/page/VioeaE6U">About</a><li>
+        </ul>
+        <hr>
     </div>
 </div>
 <div class="row mb-4">
 
-    <div class="col-sm">
-    </div>
+    
     <div class="col-sm-8">
         {% block header %}{% endblock %}
         {% block content %}{% endblock %}
