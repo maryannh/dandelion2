@@ -1,20 +1,24 @@
 {% extends 'single_base.html' %}
-{% set active_page = page_id %}
 
 {% block main_title %}
-    {{ content["name"] }} -
+    {{ info["title"] }} -
 {% endblock %}
 
+
 {% block body_class %}
-<body class="page">
+<body class="post">
 {% endblock %}
 
 {% block header %}
-    <h2>{{ content["name"] }}</h2>
+    
+    <h2>
+        {{ info["title"] }}
+    </h2>
+    
+    
 {% endblock %}
-
-
 
 {% block content %}
     {{ text|safe }}
+    
 {% endblock %}

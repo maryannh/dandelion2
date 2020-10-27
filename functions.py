@@ -93,6 +93,7 @@ def add_to_db(content_type):
         content_r = requests.get(content_url, params=payload)
         content = content_r.json()
         date = content.get("due", "NA")
+        dt = parse(date)
         image = None
         credits = None
         if content_type == "post":
@@ -108,7 +109,7 @@ def add_to_db(content_type):
             image = attachments[0]["url"]
             credits = get_credits(item_id)
         info = {
-                "date": date,
+                "date": dt,
                 "item_id": item_id,
                 "title": content.get("name", "NA"),
                 "image": image,
@@ -119,5 +120,3 @@ def add_to_db(content_type):
         # add to db
         post_id = db.content.insert_one(info).inserted_id
         print(str(post_id) + " " + str(content_type))
-        
-add_to_db("post")

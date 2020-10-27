@@ -107,9 +107,10 @@ body.index div.sidebar div.posts {
             
 <div class="downloads">
     <h5>Downloads</h5>
-    <ul>
-        {% for do 
-        <li></li>
+    <ul class="list-unstyled">
+        {% for download in download_loop %}
+        <li class="mb-2"><a href="{{ config.BASE_URL }}/downloads/{{ download["item_id"] }}">{{ download["title"] }}</a></li>
+        {% endfor %}
     </ul>
 </div>
 
@@ -119,7 +120,16 @@ body.index div.sidebar div.posts {
         <div class="links">
 <h5>Latest Links</h5>
 <p>Links with &#10036; contain topical information that you might want to check out.</p>
-{{ link_loop["title"] }}
+
+ <ul class="list-unstyled">
+     {% for link in link_loop[:20] %}
+     <li class="mb-2">
+         <a href="{{ link["text"] }}">{{ link["title"] }}</a>
+     </li>
+     {% endfor %}
+ </ul>
+            
+            
 </div>
     </div>
   </div>
