@@ -55,14 +55,13 @@ def get_credits(item_id):
                 'token': config.TRELLO_TOKEN,
                 'filter': 'cover'
                 }
-    custom_url = "https://api.trello.com/1/cards/" + item_id + "/customFieldItems"
-    custom_r = requests.get(custom_url, params=payload)
-    custom = custom_r.json()
-    first = custom[0]
+    url = "https://api.trello.com/1/cards/" + item_id + "/customFieldItems"
+    r = requests.get(url, params=payload)
+    data = r.json()
+    first = data[0]
     first_value = first["value"]["text"]
-    second = custom[1]
+    second = data[1]
     second_value = second["value"]["text"]
-    # check if first_value is URL
     if checkers.is_url(first_value):
         credit_url = first_value
         credit_name = second_value
@@ -75,8 +74,37 @@ def get_credits(item_id):
     return {
         "name": credit_name,
         "url": credit_url
-    }    
+    }  
 
+def get_labels(item_id):
+    payload = {
+                'key': config.TRELLO_KEY,
+                'token': config.TRELLO_TOKEN,
+                }
+    url = "https://api.trello.com/1/cards/" + item_id
+    r = requests.get(url, params=payload)
+    data = r.json()
+    labels = data["idLabels"]
+    tags = []
+    subjects = []
+    for label in labels:
+        label_url = "https://api.trello.com/1/labels/" + label
+        label_r = requests.get(label_url, params=payload)
+        data = label_r.json()
+        subject = None
+        tag = None
+        if data["color"] == "green":
+            subject = data["name"]
+            subjects.append(subject)
+        if data["color"] == "purple":
+            tag = data["name"]
+            tags.append(tag)
+    taxonomy = {
+        "tags": tags,
+        "subjects": subjects,
+    }
+    return taxonomy      
+    
 def add_to_db(content_type):
     """ add content to Mongo DB """
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
@@ -107,6 +135,7 @@ def add_to_db(content_type):
             attachments = attachments_r.json()
             image = attachments[0]["url"]
             credits = get_credits(item_id)
+        taxonomy = get_labels(item_id)
         info = {
                 "date": dt,
                 "item_id": item_id,
@@ -115,6 +144,7 @@ def add_to_db(content_type):
                 "text": content.get("desc", "NA"),
                 "type": content_type,
                 "credits": credits,
+                "taxonomy": taxonomy,
             }
         # add to db
         post_id = db.content.insert_one(info).inserted_id
