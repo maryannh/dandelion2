@@ -135,6 +135,7 @@ def add_to_db(content_type):
             attachments = attachments_r.json()
             image = attachments[0]["url"]
             credits = get_credits(item_id)
+            author = "Mary-Ann Horley"
         taxonomy = get_labels(item_id)
         info = {
                 "date": dt,
@@ -145,6 +146,7 @@ def add_to_db(content_type):
                 "type": content_type,
                 "credits": credits,
                 "taxonomy": taxonomy,
+                "author": author,
             }
         # add to db
         post_id = db.content.insert_one(info).inserted_id
