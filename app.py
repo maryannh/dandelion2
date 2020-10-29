@@ -16,6 +16,7 @@ markdown = mistune.Markdown()
 
 @app.route("/")
 def index():
+    print(os.environ)
     db = MongoClient("mongodb+srv://admin:" + os.environ["keys"]["MONGODB_PASS"] + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     post_loop = list(db.content.find({
         "type": "post"
