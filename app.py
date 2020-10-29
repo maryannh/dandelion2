@@ -5,9 +5,12 @@ import config
 from pymongo import MongoClient
 import pymongo
 import datetime
+import os 
 from functions import add_to_db
 
 app = Flask(__name__)
+
+app.config.from_pyfile('config.py', silent=True)
 
 markdown = mistune.Markdown()
 
@@ -60,4 +63,4 @@ def download(page_id):
     return render_template("page.html", info=info, text=text)
 
 # if __name__ == '__main__':
-   # app.run(debug=True, host='0.0.0.0')
+    # app.run(debug=True, host='0.0.0.0')

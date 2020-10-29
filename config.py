@@ -1,10 +1,21 @@
-TRELLO_KEY = "8938aa4155903543d16fc09f47321158"
-TRELLO_TOKEN = "0b2ff75a0d8cc6845b8378737d7b04dee7e0e1bff841687d751ca6ed4af954cd"
-BOARD_ID = "jReHbHLR"
-POSTS_LABEL = "5f1ea0d7c50ce23cb471844f"
-PAGES_LABEL = "5f1ea0f226f1995b93fc2bc6"
-DOWNLOADS_LABEL = "5f1ea0cf1f403e247fa88f78"
-LINKS_LABEL = "5f1e9f067669b2254969010c"
-BASE_URL = "https://www.dandelionhe.com"
-MONGODB_USER = "admin"
-MONGODB_PASS = "entLkmnmqHwziIZ3"
+import os
+
+TRELLO_KEY = os.environ.get("TRELLO_KEY")
+
+TRELLO_TOKEN = os.environ.get("TRELLO_TOKEN")
+
+BOARD_ID = os.environ.get("BOARD_ID")
+
+POSTS_LABEL = os.environ.get("POSTS_LABEL")
+
+PAGES_LABEL = os.environ.get("PAGES_LABEL")
+
+DOWNLOADS_LABEL = os.environ.get("DOWNLOADS_LABEL")
+
+LINKS_LABEL = os.environ.get("LINKS_LABEL")
+
+BASE_URL = os.environ.get("BASE_URL")
+
+MONGODB_USER = os.environ.get("MONGODB_USER")
+
+MONGODB_PASS = os.environ.get("MONGODB_PASS")
