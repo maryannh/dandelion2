@@ -1,0 +1,55 @@
+{% extends 'single_base.html' %}
+
+{% block main_title %}
+    Why and how to home educate -
+{% endblock %}
+
+
+{% block body_class %}
+<body class="post">
+{% endblock %}
+
+{% block header %}
+    
+    <h2>
+        Why and how to home educate
+    </h2>
+    
+    
+{% endblock %}
+
+{% block content %}
+    <p>
+        This page brings together my blog posts on why you might want to home educate and how to do it, and also links from a variety of perspectives.
+    </p>
+    
+    <h3 class="mb-2">Posts</h3>
+    {% for post in posts %}
+        <div class="row loop mb-4">
+<div class="col-3 image">
+    <a href="{{ config.BASE_URL }}/post/{{ post["item_id"] }}">
+        <img src="{{ post["image"] }}" class="img-fluid rounded border" alt="{{ post["title"] }}">
+    </a>
+</div>
+<div class="col-9 post">
+<h4 class="loop">
+    <a href="{{ config.BASE_URL }}/post/{{ post["item_id"] }}">
+        {{ post["title"] }}
+    </a>
+    <small>{{ post["date"].strftime("%-d %B %Y") }}</small>
+    </h4>
+</div>
+</div>
+    
+    {% endfor %}
+    
+    <h3 class="mb-2">Links</h3>
+    <ul class="list-unstyled">
+    {% for link in links %}
+     <li class="mb-2">
+         <a href="{{ link["text"] }}">{{ link["title"] }}</a>
+     </li>
+    {% endfor %}
+    </ul>
+    
+{% endblock %}

@@ -7,6 +7,8 @@ import datetime
 import dns
 import json
 from validator_collection import validators, checkers
+from slugify import slugify
+
 
 def all_content_ids(content_type):
     """ get short ids of all active content """
@@ -94,10 +96,10 @@ def get_labels(item_id):
         subject = None
         tag = None
         if data["color"] == "green":
-            subject = data["name"]
+            subject = slugify(data["name"], separator='_')
             subjects.append(subject)
         if data["color"] == "purple":
-            tag = data["name"]
+            tag = slugify(data["name"], separator='_')
             tags.append(tag)
     taxonomy = {
         "tags": tags,
@@ -123,6 +125,8 @@ def add_to_db(content_type):
         dt = parse(date)
         image = None
         credits = None
+        author = "Mary-Ann Horley"
+        title = content.get("name", "NA")
         if content_type == "post":
             # attachments
             payload = {
@@ -135,18 +139,21 @@ def add_to_db(content_type):
             attachments = attachments_r.json()
             image = attachments[0]["url"]
             credits = get_credits(item_id)
-            author = "Mary-Ann Horley"
         taxonomy = get_labels(item_id)
+        tags = taxonomy["tags"]
+        subjects = taxonomy["subjects"]
         info = {
                 "date": dt,
                 "item_id": item_id,
-                "title": content.get("name", "NA"),
+                "title": title,
                 "image": image,
                 "text": content.get("desc", "NA"),
                 "type": content_type,
                 "credits": credits,
-                "taxonomy": taxonomy,
                 "author": author,
+                "subjects": subjects,
+                "tags": tags,
+                "slug": slugify(title, separator='_'),
             }
         # add to db
         post_id = db.content.insert_one(info).inserted_id

@@ -8,6 +8,7 @@ import datetime
 import os 
 from functions import add_to_db
 
+
 app = Flask(__name__)
 
 app.config.from_pyfile('config.py', silent=True)
@@ -16,7 +17,6 @@ markdown = mistune.Markdown()
 
 @app.route("/")
 def index():
-    print(os.environ)
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     post_loop = list(db.content.find({
         "type": "post"
@@ -42,6 +42,19 @@ def cron():
     add_to_db("page")
     return render_template("cron.html")
 
+@app.route("/why_and_how")
+def why():
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    posts = list(db.content.find({
+        "type": "post",
+        "tags": {"$in": ["why_and_how"] }
+    }).sort("date", -1))
+    links = list(db.content.find({
+        "type": "link",
+        "tags": {"$in": ["why_and_how"] }
+    }).sort("date", -1))
+    return render_template("why.html", links=links, posts=posts)
+
 @app.route("/post/<post_id>")
 def post(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
@@ -63,5 +76,5 @@ def download(page_id):
     text = markdown(info["text"])
     return render_template("page.html", info=info, text=text)
 
-# if __name__ == '__main__':
-    # app.run(debug=True, host='0.0.0.0')
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
