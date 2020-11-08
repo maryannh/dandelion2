@@ -7,6 +7,7 @@ import pymongo
 import datetime
 import os 
 from functions import add_to_db
+import datetime
 
 
 app = Flask(__name__)
@@ -30,6 +31,10 @@ def index():
     link_loop = list(db.content.find({
         "type": "link"
     }).sort("date", -1))
+    db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": "index"
+    })
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
 
@@ -53,6 +58,11 @@ def why():
         "type": "link",
         "tags": {"$in": ["why_and_how"] }
     }).sort("date", -1))
+    db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": "why_and_how"
+      "type": "page"
+    })
     return render_template("why.html", links=links, posts=posts)
 
 @app.route("/post/<post_id>")
@@ -60,6 +70,11 @@ def post(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": post_id})
     text = markdown(info["text"])
+    db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": info["title"],
+      "type": "post",
+    })
     return render_template("post.html", info=info, text=text)
 
 @app.route("/page/<page_id>")
@@ -67,6 +82,11 @@ def page(page_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])
+    db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": info["title"],
+      "type": "page",
+    })
     return render_template("page.html", info=info, text=text)
 
 @app.route("/download/<page_id>")
@@ -74,6 +94,11 @@ def download(page_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])
+    db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": info["title"],
+      "type": "download",
+    })
     return render_template("page.html", info=info, text=text)
 
 # if __name__ == '__main__':
