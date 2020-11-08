@@ -98,10 +98,11 @@ body.index div.sidebar div.posts {
 <div class="row mb-4">
 
     
-    <div class="col-sm-8">
+    <div class="col-sm">
         {% block header %}{% endblock %}
-        {% block content %}{% endblock %}
-    
+        <div class="mx-5">
+          {% block content %}{% endblock %}
+        </div>
     </div>
     
    

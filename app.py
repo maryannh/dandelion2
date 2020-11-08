@@ -6,9 +6,8 @@ from pymongo import MongoClient
 import pymongo
 import datetime
 import os 
+from dateutil import parser
 from functions import add_to_db
-import datetime
-
 
 app = Flask(__name__)
 
@@ -33,7 +32,9 @@ def index():
     }).sort("date", -1))
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
-      "page": "index"
+      "page": "index",
+      "type": "index",
+      "referrer": request.referrer,
     })
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
@@ -61,7 +62,8 @@ def why():
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": "why_and_how",
-      "type": "page"
+      "type": "page",
+      "referrer": request.referrer,
     })
     return render_template("why.html", links=links, posts=posts)
 
@@ -73,7 +75,12 @@ def post(post_id):
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": info["title"],
-      "type": "post",
+      "type": info["type"],
+      "item_id": info["item_id"],
+      "published": parser.parse(info["date"]),
+      "tags": info["tags"],
+      "subjects": info["subjects"],
+      "referrer": request.referrer,
     })
     return render_template("post.html", info=info, text=text)
 
@@ -85,7 +92,12 @@ def page(page_id):
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": info["title"],
-      "type": "page",
+      "type": info["type"],
+      "item_id": info["item_id"],
+      "published": parser.parse(info["date"]),
+      "tags": info["tags"],
+      "subjects": info["subjects"],
+      "referrer": request.referrer,
     })
     return render_template("page.html", info=info, text=text)
 
@@ -97,7 +109,12 @@ def download(page_id):
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": info["title"],
-      "type": "download",
+      "type": info["type"],
+      "item_id": info["item_id"],
+      "published": parser.parse(info["date"]),
+      "tags": info["tags"],
+      "subjects": info["subjects"],
+      "referrer": request.referrer,
     })
     return render_template("page.html", info=info, text=text)
 
