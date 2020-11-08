@@ -60,7 +60,7 @@ def why():
     }).sort("date", -1))
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
-      "page": "why_and_how"
+      "page": "why_and_how",
       "type": "page"
     })
     return render_template("why.html", links=links, posts=posts)
