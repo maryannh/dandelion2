@@ -74,6 +74,22 @@ body.index div.sidebar div.posts {
 {% block body_class %}{% endblock %}
 
 <div class="container">
+  <div class="row">
+    <div class="col">
+      <ul class="nav">
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ config.BASE_URL }}/page/VioeaE6U">About</a>
+  </li>
+             <li class="nav-item">
+    <a class="nav-link" href="{{ config.BASE_URL }}/why">Why and how to home educate</a>
+  </li>
+  
+</ul>
+    </div>
+  </div>
 <div class="row">
     <div class="col site-header">
         <h1 class="mt-4 mb-4">
@@ -85,23 +101,7 @@ body.index div.sidebar div.posts {
                 Home education for the rest of us
             </small>
         </h1>
-        <hr>
-        
-        <ul class="nav">
-  <li class="nav-item">
-    <a class="nav-link" href="{{ url_for('index') }}">Home</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{{ config.BASE_URL }}/page/VioeaE6U">About</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{{ config.BASE_URL }}/why">Why and how to home educate</a>
-  </li>
-</ul>
-        
-        
-      
-        <hr>
+   
     </div>
 </div>
 <div class="row mb-4">

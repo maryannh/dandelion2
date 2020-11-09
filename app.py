@@ -48,6 +48,11 @@ def cron():
     add_to_db("page")
     return render_template("cron.html")
 
+@app.route("/stats")
+def stats():
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    return render_template("stats.html")
+
 @app.route("/why")
 def why():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
