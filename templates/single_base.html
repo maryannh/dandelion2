@@ -68,19 +68,9 @@ body.index div.sidebar div.posts {
 {% block body_class %}{% endblock %}
 
 <div class="container">
-<div class="row">
-    <div class="col site-header">
-        <h1 class="mt-4 mb-4">
-            <a href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='images/icon.png') }}">
-                Dandelion
-            </a>
-            <small>
-                Home education for the rest of us
-            </small>
-        </h1>
-        <hr>
-         <ul class="nav">
+  <div class="row">
+    <div class="col">
+      <ul class="nav">
   <li class="nav-item">
     <a class="nav-link" href="{{ url_for('index') }}">Home</a>
   </li>
@@ -92,7 +82,21 @@ body.index div.sidebar div.posts {
   </li>
   
 </ul>
-        <hr>
+<hr>
+    </div>
+  </div>
+<div class="row">
+    <div class="col site-header">
+        <h1 class="mt-4 mb-4">
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/icon.png') }}">
+                Dandelion
+            </a>
+            <small>
+                Home education for the rest of us
+            </small>
+        </h1>
+      
     </div>
 </div>
 <div class="row mb-4">

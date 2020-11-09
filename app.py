@@ -6,7 +6,7 @@ from pymongo import MongoClient
 import pymongo
 import datetime
 import os 
-from dateutil import parser
+# from dateutil import parser
 from functions import add_to_db
 
 app = Flask(__name__)
