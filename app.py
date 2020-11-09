@@ -77,7 +77,7 @@ def post(post_id):
       "page": info["title"],
       "type": info["type"],
       "item_id": info["item_id"],
-      "published": parser.parse(info["date"]),
+      "published": info["date"] ,   
       "tags": info["tags"],
       "subjects": info["subjects"],
       "referrer": request.referrer
@@ -94,7 +94,7 @@ def page(page_id):
       "page": info["title"],
       "type": info["type"],
       "item_id": info["item_id"],
-      "published": parser.parse(info["date"]),
+      "published": info["date"] ,
       "tags": info["tags"],
       "subjects": info["subjects"],
       "referrer": request.referrer    
@@ -111,7 +111,7 @@ def download(page_id):
       "page": info["title"],
       "type": info["type"],
       "item_id": info["item_id"],
-      "published": parser.parse(info["date"]),
+      "published": info["date"] ,
       "tags": info["tags"],
       "subjects": info["subjects"],
       "referrer": request.referrer
