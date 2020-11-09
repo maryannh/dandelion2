@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 import mistune
 import config
@@ -34,7 +34,7 @@ def index():
       "datetime": datetime.datetime.now(),
       "page": "index",
       "type": "index",
-      "referrer": request.headers.get("Referer"),
+      "referrer": request.referrer,
     })
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
@@ -63,7 +63,7 @@ def why():
       "datetime": datetime.datetime.now(),
       "page": "why_and_how",
       "type": "page",
-      "referrer": request.headers.get("Referer"),
+      "referrer": request.referrer,
     })
     return render_template("why.html", links=links, posts=posts)
 
@@ -80,7 +80,7 @@ def post(post_id):
       "published": parser.parse(info["date"]),
       "tags": info["tags"],
       "subjects": info["subjects"],
-      "referrer": request.headers.get("Referer")
+      "referrer": request.referrer
     })
     return render_template("post.html", info=info, text=text)
 
@@ -97,7 +97,8 @@ def page(page_id):
       "published": parser.parse(info["date"]),
       "tags": info["tags"],
       "subjects": info["subjects"],
-      "referrer": request.headers.get("Referer")    })
+      "referrer": request.referrer    
+      })
     return render_template("page.html", info=info, text=text)
 
 @app.route("/download/<page_id>")
@@ -113,7 +114,7 @@ def download(page_id):
       "published": parser.parse(info["date"]),
       "tags": info["tags"],
       "subjects": info["subjects"],
-      "referrer": request.headers.get("Referer")
+      "referrer": request.referrer
     })
     return render_template("page.html", info=info, text=text)
 
