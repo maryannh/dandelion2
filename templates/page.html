@@ -13,6 +13,13 @@
     
     <h2>
         {{ info["title"] }}
+        {% if info["subjects"] %}
+        {% for subject in info["subjects"] %}
+          <span class="badge badge-light mr-3">
+            {{ subject }}
+          </span>
+            {% endfor %}
+            {% endif %}
     </h2>
     
     
