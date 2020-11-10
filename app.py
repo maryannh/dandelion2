@@ -15,6 +15,10 @@ app.config.from_pyfile('config.py', silent=True)
 
 markdown = mistune.Markdown()
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 @app.route("/")
 def index():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog

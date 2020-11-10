@@ -1,0 +1,24 @@
+{% extends 'single_base.html' %}
+
+{% block main_title %}
+    {{ info["title"] }} -
+{% endblock %}
+
+
+{% block body_class %}
+<body class="post">
+{% endblock %}
+
+{% block header %}
+    
+    <h2>
+Page not found :(
+    </h2>
+    
+    
+{% endblock %}
+
+{% block content %}
+<p>What you were looking for is just not there.
+  <p><a href="{{ url_for('index') }}">go somewhere nice</a>    
+{% endblock %}
