@@ -77,7 +77,7 @@ def why():
     return render_template("why.html", links=links, posts=posts)
 
 @app.route("/tag/<tag>")
-def tag():
+def tag(tag):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     posts = list(db.content.find({
         "type": "post",
