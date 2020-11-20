@@ -76,6 +76,25 @@ def why():
     })
     return render_template("why.html", links=links, posts=posts)
 
+@app.route("/tag/<tag>")
+def tag():
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    posts = list(db.content.find({
+        "type": "post",
+        "tags": {"$in": [tag] }
+    }).sort("date", -1))
+    links = list(db.content.find({
+        "type": "link",
+        "tags": {"$in": [tag] }
+    }).sort("date", -1))
+    db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": "tag",
+      "type": "tag",
+      "referrer": request.referrer,
+    })
+    return render_template("tag.html", links=links, posts=posts, tag=tag)
+
 @app.route("/post/<post_id>")
 def post(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
