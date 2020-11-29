@@ -1,0 +1,73 @@
+
+@media (min-width: 576px) {
+div.post-text, div.tag-text, div.page-text, div.subject-text, div.subjects-text, div.tags-text {
+  width: 600px;
+}
+}
+
+
+
+body {
+        background: #ECEFF4;
+        color: #3B4252;
+    }
+
+h1 {
+  font-family: 'Emblema One', cursive;
+}
+
+h1 img {
+  width: 2rem;
+  max-height: auto;
+}
+
+h1 a:link, h3 a:link {
+        color: #434C5E;
+        text-decoration: none;
+    }
+
+h1 a:hover, h1 a:visited {
+  text-decoration: none;
+        color: #434C5E;
+}
+
+h3 a:hover, h3 a:visited {
+        text-decoration: none;
+        color: #5E81AC;
+    }
+
+a:link {
+        color: #4C566A;
+        text-decoration: underline;
+    }
+
+a:hover, a:visited, a:active {
+        color: #5E81AC;
+    }
+
+/* post template */
+body.post h2 {
+
+}
+
+div.post-text {
+  font-size: 1.25rem;
+}
+
+div.post-text p:first-child, div.tag-text p:first-child, div.page-text p:first-child, div.subject-text p:first-child, div.tags-text p:first-child, div.subjects-text p:first-child {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+/* tag template */
+
+body.tag p.description {
+  font-size: 1.25rem;
+}
+
+/* About page template */
+
+body.about img.float-left {
+  width: 200px;
+  max-height: auto;
+}

@@ -43,6 +43,10 @@ def index():
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
 
+@app.route("/about")
+def about():
+  return render_template("about.html")
+
 @app.route("/cron")
 def cron():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
