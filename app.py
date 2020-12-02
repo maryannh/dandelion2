@@ -75,10 +75,10 @@ def why():
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": "why_and_how",
-      "type": "page",
+      "type": "tag",
       "referrer": request.referrer,
     })
-    return render_template("why.html", links=links, posts=posts)
+    return render_template("why2.html", links=links, posts=posts)
 
 @app.route("/tag/<tag>")
 def tag(tag):
