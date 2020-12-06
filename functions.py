@@ -7,7 +7,7 @@ import datetime
 import dns
 import json
 from validator_collection import validators, checkers
-from slugify import slugify
+from slugify import slugify 
 
 
 def all_content_ids(content_type):
@@ -78,6 +78,22 @@ def get_credits(item_id):
         "url": credit_url
     }  
 
+def add_tag(name, slug):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db.tags.update_one({
+      "slug": slug, 
+      "name": name,
+      "description": "blank",
+      }, upsert=True)
+
+def add_subject(name, slug):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db.subjects.update_one({
+      "slug": slug, 
+      "name": name,
+      "description": "blank",
+      }, upsert=True)
+
 def get_labels(item_id):
     payload = {
                 'key': config.TRELLO_KEY,
@@ -98,9 +114,11 @@ def get_labels(item_id):
         if data["color"] == "green":
             subject = slugify(data["name"], separator='_')
             subjects.append(subject)
+            add_subject(data["name"], subject)
         if data["color"] == "purple":
             tag = slugify(data["name"], separator='_')
             tags.append(tag)
+            add_tag(data["name"], tag)
     taxonomy = {
         "tags": tags,
         "subjects": subjects,
