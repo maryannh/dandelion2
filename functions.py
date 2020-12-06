@@ -80,19 +80,29 @@ def get_credits(item_id):
 
 def add_tag(name, slug):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
-    db.tags.update_one({
-      "slug": slug, 
+    filter = { "slug": slug }
+    info = { 
       "name": name,
       "description": "blank",
-      }, upsert=True)
+      }
+    db.tags.update_one(
+      filter, 
+      {"$set": info}, 
+      upsert=True
+      )
 
 def add_subject(name, slug):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
-    db.subjects.update_one({
-      "slug": slug, 
+    filter = { "slug": slug }
+    info = { 
       "name": name,
       "description": "blank",
-      }, upsert=True)
+      }
+    db.subjects.update_one(
+      filter, 
+      {"$set": info}, 
+      upsert=True
+      )
 
 def get_labels(item_id):
     payload = {
