@@ -91,13 +91,20 @@ def tag(tag):
         "type": "link",
         "tags": {"$in": [tag] }
     }).sort("date", -1))
+    downloads = list(db.content.find({
+        "type": "download",
+        "tags": {"$in": [tag] }
+    }).sort("date", -1))
+    info = db.tags.find_one({
+        "slug": tag,
+    })
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": "tag",
       "type": "tag",
       "referrer": request.referrer,
     })
-    return render_template("tag.html", links=links, posts=posts, tag=tag)
+    return render_template("tag.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
 
 @app.route("/post/<post_id>")
 def post(post_id):
