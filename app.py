@@ -106,6 +106,32 @@ def tag(tag):
     })
     return render_template("tag.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
 
+@app.route("/subject/<subject>")
+def subject(subject):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    posts = list(db.content.find({
+        "type": "post",
+        "tags": {"$in": [tag] }
+    }).sort("date", -1))
+    links = list(db.content.find({
+        "type": "link",
+        "tags": {"$in": [tag] }
+    }).sort("date", -1))
+    downloads = list(db.content.find({
+        "type": "download",
+        "tags": {"$in": [tag] }
+    }).sort("date", -1))
+    info = db.subjects.find_one({
+        "slug": subject,
+    })
+    db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": "tag",
+      "type": "tag",
+      "referrer": request.referrer,
+    })
+    return render_template("subject.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
+
 @app.route("/post/<post_id>")
 def post(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
