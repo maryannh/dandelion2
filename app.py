@@ -83,32 +83,47 @@ def why():
 @app.route("/tag/<tag>")
 def tag(tag):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
-    posts = list(db.content.find({
+
+    posts_query = db.content.find({
         "type": "post",
         "tags": {"$in": [tag] }
-    }).sort("date", -1))
-    links = list(db.content.find({
+    }).sort("date", -1)
+    posts = None
+    if posts_query != None:
+        posts = list(posts_query)
+
+    links_query = db.content.find({
         "type": "link",
         "tags": {"$in": [tag] }
-    }).sort("date", -1))
-    downloads = list(db.content.find({
+    }).sort("date", -1)
+    links = None
+    if links_query != None:
+        links = list(links_query)
+
+    downloads_query = db.content.find({
         "type": "download",
         "tags": {"$in": [tag] }
-    }).sort("date", -1))
+    }).sort("date", -1)
+    downloads = None
+    if downloads_query != None:
+        downloads = list(downloads_query)
+
     info = db.tags.find_one({
         "slug": tag,
     })
+
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": "tag",
       "type": "tag",
       "referrer": request.referrer,
     })
+
     return render_template("tag.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
 
 @app.route("/subject/<subject>")
 def subject(subject):
-  
+
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
 
     posts_query = db.content.find({
