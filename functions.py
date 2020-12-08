@@ -16,7 +16,7 @@ def content_stats(page_type, item_id, info):
       "type": page_type,
       "item_id": item_id,
       "published": info["date"],   
-      "tags": info["tags"]
+      "tags": info["tags"],
       "subjects": info["subjects"],
       "referrer": request.referrer,
       "string": request.user_agent.string,
