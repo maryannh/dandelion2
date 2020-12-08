@@ -108,28 +108,45 @@ def tag(tag):
 
 @app.route("/subject/<subject>")
 def subject(subject):
+  
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
-    posts = list(db.content.find({
+
+    posts_query = db.content.find({
         "type": "post",
-        "tags": {"$in": [tag] }
-    }).sort("date", -1))
-    links = list(db.content.find({
+        "subjects": {"$in": [subject] }
+    }).sort("date", -1)
+    posts = None
+    if posts_query != None:
+        posts = list(posts_query)
+    # if there's no posts, this needs to return none
+
+    links_query = db.content.find({
         "type": "link",
-        "tags": {"$in": [tag] }
-    }).sort("date", -1))
-    downloads = list(db.content.find({
+        "subjects": {"$in": [subject] }
+    }).sort("date", -1)
+    links = None
+    if links_query != None:
+        links = list(links_query)
+
+    downloads_query = db.content.find({
         "type": "download",
-        "tags": {"$in": [tag] }
-    }).sort("date", -1))
+        "subjects": {"$in": [subject] }
+    }).sort("date", -1)
+    downloads = None
+    if downloads_query != None:
+        downloads = list(downloads_query)
+
     info = db.subjects.find_one({
         "slug": subject,
     })
+
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": "tag",
       "type": "tag",
       "referrer": request.referrer,
     })
+
     return render_template("subject.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
 
 @app.route("/post/<post_id>")
