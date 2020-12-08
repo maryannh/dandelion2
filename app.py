@@ -7,7 +7,7 @@ import pymongo
 import datetime
 import os 
 # from dateutil import parser
-from functions import add_to_db
+from functions import add_to_db, stats, content_stats
 
 app = Flask(__name__)
 
@@ -35,26 +35,14 @@ def index():
         "type": "link"
     }).sort("date", -1))
 
-    db.stats.insert_one({
-      "datetime": datetime.datetime.now(),
-      "page": "index",
-      "type": "index",
-      "referrer": request.referrer,
-      "string": request.user_agent.string,
-    })
+    stats("index", "index")
 
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
 
 @app.route("/about")
 def about():
-  db.stats.insert_one({
-      "datetime": datetime.datetime.now(),
-      "page": "about",
-      "type": "page",
-      "referrer": request.referrer,
-      "string": request.user_agent.string,
-    })
+  stats("page", "about")
   return render_template("about.html")
 
 @app.route("/cron")
@@ -82,13 +70,7 @@ def why():
         "type": "link",
         "tags": {"$in": ["why_and_how"] }
     }).sort("date", -1))
-    db.stats.insert_one({
-      "datetime": datetime.datetime.now(),
-      "page": "why_and_how",
-      "type": "tag",
-      "referrer": request.referrer,
-      "string": request.user_agent.string,
-    })
+    stats("tag", "why_and_how")
     return render_template("why.html", links=links, posts=posts)
 
 @app.route("/tag/<tag>")
@@ -123,13 +105,7 @@ def tag(tag):
         "slug": tag,
     })
 
-    db.stats.insert_one({
-      "datetime": datetime.datetime.now(),
-      "page": tag,
-      "type": "tag",
-      "referrer": request.referrer,
-      "string": request.user_agent.string,
-    })
+    stats("tag", tag)
 
     return render_template("tag.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
 
@@ -167,13 +143,7 @@ def subject(subject):
         "slug": subject,
     })
 
-    db.stats.insert_one({
-      "datetime": datetime.datetime.now(),
-      "page": subject,
-      "type": "subject",
-      "referrer": request.referrer,
-      "string": request.user_agent.string,
-    })
+    stats("subject", subject)
 
     return render_template("subject.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
 
@@ -182,17 +152,7 @@ def post(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": post_id})
     text = markdown(info["text"])
-    db.stats.insert_one({
-      "datetime": datetime.datetime.now(),
-      "page": info["title"],
-      "type": info["type"],
-      "item_id": info["item_id"],
-      "published": info["date"] ,   
-      "tags": info["tags"],
-      "subjects": info["subjects"],
-      "referrer": request.referrer,
-      "string": request.user_agent.string,
-    })
+    content_stats("post", post_id, info)
     return render_template("post.html", info=info, text=text)
 
 @app.route("/page/<page_id>")
@@ -200,17 +160,7 @@ def page(page_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])
-    db.stats.insert_one({
-      "datetime": datetime.datetime.now(),
-      "page": info["title"],
-      "type": info["type"],
-      "item_id": info["item_id"],
-      "published": info["date"] ,
-      "tags": info["tags"],
-      "subjects": info["subjects"],
-      "referrer": request.referrer,
-      "string": request.user_agent.string, 
-      })
+    content_stats("page", page_id, info)
     return render_template("page.html", info=info, text=text)
 
 @app.route("/download/<page_id>")
@@ -218,17 +168,7 @@ def download(page_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])
-    db.stats.insert_one({
-      "datetime": datetime.datetime.now(),
-      "page": info["title"],
-      "type": info["type"],
-      "item_id": info["item_id"],
-      "published": info["date"] ,
-      "tags": info["tags"],
-      "subjects": info["subjects"],
-      "referrer": request.referrer,
-      "string": request.user_agent.string,
-    })
+    content_stats("download", page_id, info)
     return render_template("page.html", info=info, text=text)
 
 # if __name__ == '__main__':

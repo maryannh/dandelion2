@@ -9,6 +9,28 @@ import json
 from validator_collection import validators, checkers
 from slugify import slugify 
 
+def content_stats(page_type, item_id, info):
+    db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": info["title"],
+      "type": page_type,
+      "item_id": item_id,
+      "published": info["date"],   
+      "tags": info["tags"]
+      "subjects": info["subjects"],
+      "referrer": request.referrer,
+      "string": request.user_agent.string,
+    })
+
+def stats("page_type", "page_name"):
+    db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": page_name,
+      "type": page_type,
+      "referrer": request.referrer,
+      "string": request.user_agent.string,
+    })
+
 
 def all_content_ids(content_type):
     """ get short ids of all active content """
