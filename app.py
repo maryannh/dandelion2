@@ -17,6 +17,7 @@ markdown = mistune.Markdown()
 
 @app.errorhandler(404)
 def page_not_found(e):
+    stats("error", "404")
     return render_template('404.html'), 404
 
 @app.route("/")
@@ -40,10 +41,63 @@ def index():
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
 
+@app.route("/subjects")
+def subjects():
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+
+    subject_list = list(db.subjects.find())
+
+    subject_count = []
+    
+    for subject in subject_list:
+        slug = subject["slug"]
+        name = subject["name"]
+        count = db.content.count({
+          "subject": slug
+          })
+        if count > 2:
+          info = {
+            "slug": slug,
+            "name": name,
+            "count": count,
+          }
+          subject_count.append(info)
+
+    stats("index", "subjects")
+
+    return render_template("subjects.html", subject_count=subject_count)
+
+@app.route("/tags")
+def tags():
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+
+    tags_list = list(db.tags.find())
+
+    tag_count = []
+    
+    for tag in tag_list:
+        slug = tag["slug"]
+        name = tag["name"]
+        count = db.content.count({
+          "tag": slug
+          })
+        
+        if count > 2:
+          info = {
+            "slug": slug,
+            "name": name,
+            "count": count,
+          }
+          tag_count.append(info)
+
+    stats("index", "tags")
+
+    return render_template("tags.html", tag_count=tag_count)
+
 @app.route("/about")
 def about():
-  stats("page", "about")
-  return render_template("about.html")
+    stats("page", "about")
+    return render_template("about.html")
 
 @app.route("/cron")
 def cron():
