@@ -34,17 +34,27 @@ def index():
     link_loop = list(db.content.find({
         "type": "link"
     }).sort("date", -1))
+
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": "index",
       "type": "index",
       "referrer": request.referrer,
+      "string": request.user_agent.string,
     })
+
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
 
 @app.route("/about")
 def about():
+  db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": "about",
+      "type": "page",
+      "referrer": request.referrer,
+      "string": request.user_agent.string,
+    })
   return render_template("about.html")
 
 @app.route("/cron")
@@ -77,6 +87,7 @@ def why():
       "page": "why_and_how",
       "type": "tag",
       "referrer": request.referrer,
+      "string": request.user_agent.string,
     })
     return render_template("why.html", links=links, posts=posts)
 
@@ -114,9 +125,10 @@ def tag(tag):
 
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
-      "page": "tag",
+      "page": tag,
       "type": "tag",
       "referrer": request.referrer,
+      "string": request.user_agent.string,
     })
 
     return render_template("tag.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
@@ -157,9 +169,10 @@ def subject(subject):
 
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
-      "page": "tag",
-      "type": "tag",
+      "page": subject,
+      "type": "subject",
       "referrer": request.referrer,
+      "string": request.user_agent.string,
     })
 
     return render_template("subject.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
@@ -177,7 +190,8 @@ def post(post_id):
       "published": info["date"] ,   
       "tags": info["tags"],
       "subjects": info["subjects"],
-      "referrer": request.referrer
+      "referrer": request.referrer,
+      "string": request.user_agent.string,
     })
     return render_template("post.html", info=info, text=text)
 
@@ -194,7 +208,8 @@ def page(page_id):
       "published": info["date"] ,
       "tags": info["tags"],
       "subjects": info["subjects"],
-      "referrer": request.referrer    
+      "referrer": request.referrer,
+      "string": request.user_agent.string, 
       })
     return render_template("page.html", info=info, text=text)
 
@@ -211,7 +226,8 @@ def download(page_id):
       "published": info["date"] ,
       "tags": info["tags"],
       "subjects": info["subjects"],
-      "referrer": request.referrer
+      "referrer": request.referrer,
+      "string": request.user_agent.string,
     })
     return render_template("page.html", info=info, text=text)
 
