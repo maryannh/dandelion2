@@ -10,6 +10,7 @@ from validator_collection import validators, checkers
 from slugify import slugify 
 
 def content_stats(page_type, item_id, info):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": info["title"],
@@ -23,6 +24,7 @@ def content_stats(page_type, item_id, info):
     })
 
 def cat_stats(page_type, page_name):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": page_name,
