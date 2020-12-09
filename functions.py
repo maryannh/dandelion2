@@ -22,7 +22,7 @@ def content_stats(page_type, item_id, info):
       "string": request.user_agent.string,
     })
 
-def stats(page_type, page_name):
+def cat_stats(page_type, page_name):
     db.stats.insert_one({
       "datetime": datetime.datetime.now(),
       "page": page_name,

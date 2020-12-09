@@ -7,7 +7,7 @@ import pymongo
 import datetime
 import os 
 # from dateutil import parser
-from functions import add_to_db, stats, content_stats
+from functions import add_to_db, cat_stats, content_stats
 
 app = Flask(__name__)
 
@@ -17,7 +17,7 @@ markdown = mistune.Markdown()
 
 @app.errorhandler(404)
 def page_not_found(e):
-    stats("error", "404")
+    cat_stats("error", "404")
     return render_template('404.html'), 404
 
 @app.route("/")
@@ -36,7 +36,7 @@ def index():
         "type": "link"
     }).sort("date", -1))
 
-    stats("index", "index")
+    cat_stats("index", "index")
 
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
@@ -63,7 +63,7 @@ def subjects():
           }
           subjects.append(info)
 
-    stats("index", "subjects")
+    cat_stats("index", "subjects")
 
     return render_template("subjects.html", subjects=subjects)
 
@@ -90,13 +90,13 @@ def tags():
           }
           tag_count.append(info)
 
-    stats("index", "tags")
+    cat_stats("index", "tags")
 
     return render_template("tags.html", tag_count=tag_count)
 
 @app.route("/about")
 def about():
-    stats("page", "about")
+    cat_stats("page", "about")
     return render_template("about.html")
 
 @app.route("/cron")
@@ -124,7 +124,7 @@ def why():
         "type": "link",
         "tags": {"$in": ["why_and_how"] }
     }).sort("date", -1))
-    stats("tag", "why_and_how")
+    cat_stats("tag", "why_and_how")
     return render_template("why.html", links=links, posts=posts)
 
 @app.route("/tag/<tag>")
@@ -159,7 +159,7 @@ def tag(tag):
         "slug": tag,
     })
 
-    stats("tag", tag)
+    cat_stats("tag", tag)
 
     return render_template("tag.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
 
@@ -197,7 +197,7 @@ def subject(subject):
         "slug": subject,
     })
 
-    stats("subject", subject)
+    cat_stats("subject", subject)
 
     return render_template("subject.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
 
