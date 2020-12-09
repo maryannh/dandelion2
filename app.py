@@ -7,13 +7,37 @@ import pymongo
 import datetime
 import os 
 # from dateutil import parser
-from functions import add_to_db, cat_stats, content_stats
+from functions import add_to_db
 
 app = Flask(__name__)
 
 app.config.from_pyfile('config.py', silent=True)
 
 markdown = mistune.Markdown()
+
+def content_stats(page_type, item_id, info):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": info["title"],
+      "type": page_type,
+      "item_id": item_id,
+      "published": info["date"],   
+      "tags": info["tags"],
+      "subjects": info["subjects"],
+      "referrer": request.headers.get("Referer"),
+      "string": request.user_agent.string,
+    })
+
+def cat_stats(page_type, page_name):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db.stats.insert_one({
+      "datetime": datetime.datetime.now(),
+      "page": page_name,
+      "type": page_type,
+      "referrer": request.headers.get("Referer"),
+      "string": request.user_agent.string,
+    })
 
 @app.errorhandler(404)
 def page_not_found(e):
