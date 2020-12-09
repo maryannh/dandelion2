@@ -47,7 +47,7 @@ def subjects():
 
     subject_list = list(db.subjects.find())
 
-    subject_count = []
+    subjects = []
     
     for subject in subject_list:
         slug = subject["slug"]
@@ -61,11 +61,11 @@ def subjects():
             "name": name,
             "count": count,
           }
-          subject_count.append(info)
+          subjects.append(info)
 
     stats("index", "subjects")
 
-    return render_template("subjects.html", subject_count=subject_count)
+    return render_template("subjects.html", subjects=subjects)
 
 @app.route("/tags")
 def tags():

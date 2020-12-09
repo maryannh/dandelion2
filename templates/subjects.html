@@ -1,0 +1,36 @@
+{% extends 'base2.html' %}
+{% set active_page = "subjects" %}
+
+{% block main_title %}
+  Subjects -
+{% endblock %}
+
+{% block body_class %}
+  <body class="subjects page"> 
+{% endblock %}
+
+{% block content %}
+        <!-- body content -->
+
+      <div class="row">
+        <div class="col-sm post mx-3">
+          <h2 class="text-center display-3">Subjects</h2>
+
+         <div class="page-text mx-auto">
+
+          <ul class="list-inline">
+             {% for subject in subjects %}
+                <li class="list-inline-item"><a href="{{ config.BASE_URL }}/subject/{{ subject["slug"] }}" class="btn btn-light">{{ subject["name"] }} <span class="badge badge-light">{{ subject["count"] }}</span></a> </li>
+              {% endfor %}
+          </ul>
+
+
+
+        </div>
+
+  
+
+        </div>
+      </div>
+        <!-- /end body content -->
+{% endblock %}
