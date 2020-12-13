@@ -80,7 +80,7 @@ def subjects():
         count = db.content.count({
           "subjects": slug
           })
-        # if int(count) > 2:
+      if int(count) > 2:
         info = {
             "slug": slug,
             "name": name,

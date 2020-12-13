@@ -17,7 +17,6 @@
           <h2 class="text-center display-3">Subjects</h2>
 
          <div class="page-text mx-auto">
-{{ subjects }}
           <ul class="list-inline">
              {% for subject in subjects %}
                 <li class="list-inline-item"><a href="{{ config.BASE_URL }}/subject/{{ subject["slug"] }}" class="btn btn-light">{{ subject["name"] }} <span class="badge badge-light">{{ subject["count"] }}</span></a> </li>
