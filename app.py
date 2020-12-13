@@ -80,13 +80,13 @@ def subjects():
         count = db.content.count({
           "subjects": slug
           })
-      if int(count) > 2:
-        info = {
+        if int(count) > 2:
+          info = {
             "slug": slug,
             "name": name,
             "count": count,
-        }
-        subjects.append(info)
+          }
+          subjects.append(info)
     print(subjects)
     cat_stats("index", "subjects")
 
