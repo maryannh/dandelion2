@@ -19,7 +19,7 @@
          <div class="page-text mx-auto">
           <ul class="list-inline">
              {% for subject in subjects %}
-                <li class="list-inline-item"><a href="{{ config.BASE_URL }}/subject/{{ subject["slug"] }}" class="btn btn-light">{{ subject["name"] }} <span class="badge badge-light">{{ subject["count"] }}</span></a> </li>
+                <li class="list-inline-item"><a href="{{ config.BASE_URL }}/subject/{{ subject["slug"] }}" class="btn btn-light" mt-3>{{ subject["name"] }} <span class="badge badge-dark>{{ subject["count"] }}</span></a> </li>
               {% endfor %}
           </ul>
 
