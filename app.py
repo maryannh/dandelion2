@@ -78,7 +78,7 @@ def subjects():
         slug = subject["slug"]
         name = subject["name"]
         count = db.content.count({
-          "subject": slug
+          "subjects": slug
           })
         # if int(count) > 2:
         info = {
