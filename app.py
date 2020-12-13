@@ -71,6 +71,7 @@ def subjects():
 
     subject_list = list(db.subjects.find())
     print(subject_list)
+
     subjects = []
     
     for subject in subject_list:
@@ -79,13 +80,13 @@ def subjects():
         count = db.content.count({
           "subject": slug
           })
-        if count > 2:
-          info = {
+        # if int(count) > 2:
+        info = {
             "slug": slug,
             "name": name,
             "count": count,
-          }
-          subjects.append(info)
+        }
+        subjects.append(info)
     print(subjects)
     cat_stats("index", "subjects")
 
