@@ -70,7 +70,7 @@ def subjects():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
 
     subject_list = list(db.subjects.find())
-
+    print(subject_list)
     subjects = []
     
     for subject in subject_list:
@@ -86,7 +86,7 @@ def subjects():
             "count": count,
           }
           subjects.append(info)
-
+    print(subjects)
     cat_stats("index", "subjects")
 
     return render_template("subjects.html", subjects=subjects)
