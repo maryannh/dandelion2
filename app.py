@@ -60,8 +60,6 @@ def index():
         "type": "link"
     }).sort("date", -1))
 
-    cat_stats("index", "index")
-
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
 
@@ -88,7 +86,6 @@ def subjects():
           }
           subjects.append(info)
     print(subjects)
-    cat_stats("index", "subjects")
 
     return render_template("subjects.html", subjects=subjects)
 
@@ -96,28 +93,25 @@ def subjects():
 def tags():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
 
-    tags_list = list(db.tags.find())
+    tag_list = list(db.tags.find())
 
-    tag_count = []
+    tags = []
     
     for tag in tag_list:
         slug = tag["slug"]
         name = tag["name"]
         count = db.content.count({
-          "tag": slug
+          "tags": slug
           })
-        
-        if count > 2:
+        if int(count) > 2:
           info = {
             "slug": slug,
             "name": name,
             "count": count,
           }
-          tag_count.append(info)
+          tags.append(info)
 
-    cat_stats("index", "tags")
-
-    return render_template("tags.html", tag_count=tag_count)
+    return render_template("tags.html", tags=tags)
 
 @app.route("/about")
 def about():
