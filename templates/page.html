@@ -1,31 +1,33 @@
-{% extends 'single_base.html' %}
+{% extends 'base2.html' %}
+{% set active_page = info["slug"] %}
 
 {% block main_title %}
-    {{ info["title"] }} -
+  {{ info["title"] }} -
 {% endblock %}
-
 
 {% block body_class %}
-<body class="post">
-{% endblock %}
-
-{% block header %}
-    
-    <h2>
-        {{ info["title"] }}
-        {% if info["subjects"] %}
-        {% for subject in info["subjects"] %}
-          <span class="badge badge-light mr-3">
-            {{ subject }}
-          </span>
-            {% endfor %}
-            {% endif %}
-    </h2>
-    
-    
+  <body class="page {{ info["slug"] }}"> 
 {% endblock %}
 
 {% block content %}
-    {{ text|safe }}
-    
+        <!-- body content -->
+
+      <div class="row">
+        <div class="col-sm post mx-3">
+          <h2 class="text-center display-3">{{ info["title"] }}</h2>
+
+          <div class="tag-text mx-auto">
+
+
+            {{ text|safe }}
+
+
+
+           </div>
+
+  
+
+        </div>
+      </div>
+        <!-- /end body content -->
 {% endblock %}

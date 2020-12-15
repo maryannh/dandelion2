@@ -1,0 +1,31 @@
+{% extends 'single_base.html' %}
+
+{% block main_title %}
+    {{ info["title"] }} -
+{% endblock %}
+
+
+{% block body_class %}
+<body class="post">
+{% endblock %}
+
+{% block header %}
+    
+    <h2>
+        {{ info["title"] }}
+        {% if info["subjects"] %}
+        {% for subject in info["subjects"] %}
+          <span class="badge badge-light mr-3">
+            {{ subject }}
+          </span>
+            {% endfor %}
+            {% endif %}
+    </h2>
+    
+    
+{% endblock %}
+
+{% block content %}
+    {{ text|safe }}
+    
+{% endblock %}
