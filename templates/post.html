@@ -1,39 +1,32 @@
-{% extends 'single_base.html' %}
-{% set active_page = post_id %}
+{% extends 'base2.html' %}
+{% set active_page = info["slug"] %}
 
 {% block main_title %}
-    {{ info["title"] }} -
+  {{ info["title"] }} -
 {% endblock %}
-
 
 {% block body_class %}
-<body class="post">
-{% endblock %}
-
-{% block header %}
-    
-    <img src="{{ info["image"] }}" class="img-fluid rounded border" alt="{{ info["title"] }}">
-    
-        <small>
-            <a href="{{ info["credits"]["url"] }}">{{ info["credits"]["name"] }}</a>
-        </small>
-    
-    <h2>
-        {{ info["title"] }}
-        <small>{{ info["date"].strftime("%-d %B %Y") }}</small>
-        {% if info["subjects"] %}
-        {% for subject in info["subjects"] %}
-          <span class="badge badge-light mr-3">
-            {{ subject }}
-          </span>
-            {% endfor %}
-            {% endif %}
-    </h2>
-    
-    
+  <body class="post {{ info["slug"] }}"> 
 {% endblock %}
 
 {% block content %}
-    {{ text|safe }}
-    
+       
+ <div class="row">
+        <div class="col-sm post mx-3">
+          <h2 class="text-center display-3">{ info["title"] }}</h2>
+          <p class="meta text-monospace small text-center">{ info["date"] }}</p>
+         <img src="{{ info["image"] }}" class="img-fluid mb-3" alt="{{ info["title"] }}">
+         <small class="mx-auto">
+            Photo by <a href="{{ info["credits"]["url"] }}">{{ info["credits"]["name"] }}</a>
+        </small>
+
+         <div class="post-text mx-auto">
+{{ text|safe }}
+           </div>
+
+        </div>
+      </div>
+
+
+
 {% endblock %}

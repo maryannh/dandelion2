@@ -1,0 +1,20 @@
+ <div class="row">
+        <div class="col-sm post mx-3">
+          <h2 class="text-center display-3">Post title goes here</h2>
+          <p class="meta text-monospace small text-center">22 November 2020</p>
+         <img src="images/placeholder.jpg" class="img-fluid mb-3">
+
+         <div class="post-text mx-auto">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In molestie semper augue, vitae semper mi tempor auctor. Donec aliquam ligula ac felis gravida tristique. Nam non sem ornare, malesuada justo sed, efficitur sapien. </p>
+
+<p>Quisque ullamcorper arcu sit amet suscipit interdum. Vestibulum enim purus, tincidunt in lobortis et, scelerisque cursus neque. Sed in sapien diam. Aenean est libero, venenatis et justo in, rhoncus dapibus nibh. Nunc in maximus turpis. Sed auctor vitae diam at eleifend. Morbi id libero rhoncus, pharetra lorem dapibus, facilisis arcu.</p>
+
+<p>Donec turpis elit, bibendum mattis quam vitae, imperdiet bibendum lacus. Aliquam mattis vitae diam ut pulvinar. Praesent porta lacus ac felis dictum tincidunt. Phasellus et cursus purus. Mauris at laoreet velit. In hendrerit purus tempor, faucibus arcu eget, finibus augue. Vestibulum non nisl eros. Interdum et malesuada fames ac ante ipsum primis in faucibus. </p>
+
+<p>Cras dictum, massa sit amet viverra consequat, purus ipsum posuere diam, at ultricies ligula mauris ac erat. Nunc gravida lacus nec metus pharetra, sed ultricies augue consequat. Maecenas ut sem eget velit gravida malesuada a in mi. Quisque quis ligula sed libero venenatis commodo. Maecenas vulputate, nunc sed fermentum commodo, nisi nunc mattis magna, vel porttitor velit ipsum id justo. Cras porttitor vel neque ut congue.</p>
+           </div>
+
+  
+
+        </div>
+      </div>
