@@ -74,8 +74,8 @@ def index():
     link_loop = list(db.content.find({
         "type": "link"
     }).sort("date", -1))
-    subjects = get_subjects()
-    tags = get_tags()
+    subjects = get_subjects()[:10]
+    tags = get_tags()[:10]
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop, subjects=subjects, tags=tags)
 
