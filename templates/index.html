@@ -1,33 +1,79 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% set active_page = "index" %}
 
 {% block main_title %}
 {% endblock %}
 
 {% block body_class %}
-<body class="index">
+  <body class="index"> 
 {% endblock %}
 
-
 {% block content %}
+        <!-- body content -->
 
-{% for post in post_loop[:15] %}
-<div class="row loop mb-4">
-<div class="col-3 image">
-    <a href="{{ config.BASE_URL }}/post/{{ post["item_id"] }}">
-        <img src="{{ post["image"] }}" class="img-fluid rounded border" alt="{{ post["title"] }}">
-    </a>
-</div>
-<div class="col-9 post">
-<h4 class="loop">
-    <a href="{{ config.BASE_URL }}/post/{{ post["item_id"] }}">
-        {{ post["title"] }}
-    </a>
-    <small>{{ post["date"].strftime("%-d %B %Y") }}</small>
-    </h4>
-</div>
-</div>
-{% endfor %}
+      <div class="row">
+        <div class="col-sm">
 
+          <!-- start post loop -->
+          {% for post in post_loop[:10] %}
+          <div class="post row mb-4">
+              <div class="col-sm image">
+                <img src="{{ post["image"] }}" class="img-fluid mb-3" alt="{{ post["title"] }}" >
+              </div>
+              <div class="col-sm text">
+                <h3><a href="{{ config.BASE_URL }}/post/{{ post["item_id"] }}">{{ post["title"] }}</a></h3>
+                <p class="meta text-monospace small mt-0">{{ post["date"].strftime("%-d %B %Y") }}</p>
+            <p>{{ post["text"]|truncate(120) }} </p>          </div>
+          </div>
+          {% endfor %}
+          <!-- end post loop -->
 
+        
+
+        </div>
+        <div class="col-sm">
+          <h2>Links</h2>
+          <h5>Latest</h5>
+          <ul class="list-unstyled">
+
+            <!-- start links loop -->
+            {% for link in link_loop[:10] %}
+            <li><a href="{{ link["text"] }}">{{ link["title"] }}</a> <small>({{ link["text"].rpartition("//")[-1].partition("/")[0] }})</small></a>
+            <p class="meta text-monospace small">{{ link["date"].strftime("%-d %B %Y") }}</p>
+            </li>
+            {% endfor %}
+            <!-- end links loop -->
+
+          </ul>
+
+          <h5>More links by tag...</h5>
+          <!-- start tags loop -->
+          {% for tag in tags|sort(attribute='count', reverse=True)[:10] %}
+          <a href="{{ config.BASE_URL }}/tag/{{ tag["slug"] }}">{{ tag["name"] }}</a>{% if not loop.last %},&nbsp;{% endif }
+          {% endfor %}
+          <!-- end tags loop -->
+
+          <h5 class="mt-3">... by subject</h5>
+          <!-- start subjects loop -->
+          {% for subject in subjects|sort(attribute='count', reverse=True)[:10] %}
+          <a href="{{ config.BASE_URL }}/subject/{{ subject["slug"] }}">{{ subject["name"] }}</a>{% if not loop.last %},&nbsp;{% endif }
+          {% endfor %}
+          <!-- end subjects loop -->
+
+          <h2 class="mt-3">Downloads</h2>
+          <ul class="list-unstyled">
+
+            <!-- start downloads loop -->
+            {% for download in download_loop %}
+            <li><a href="{{ download["text"] }}">{{ download["name"] }}</a>
+            </li>
+            {% endfor %}
+            <!-- end downloads loop -->
+
+          </ul>
+        </div>
+
+      </div>
+
+        <!-- /end body content -->
 {% endblock %}
