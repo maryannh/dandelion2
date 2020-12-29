@@ -49,7 +49,7 @@
           <h5>More links by tag...</h5>
           <!-- start tags loop -->
           {% for tag in tags|sort(attribute='count', reverse=True) %}
-          <a href="{{ config.BASE_URL }}/tag/{{ tag["slug"] }}">{{ tag["name"] }}</a>{% if not loop.last %},&nbsp;{% endif }
+          <a href="{{ config.BASE_URL }}/tag/{{ tag["slug"] }}">{{ tag["name"] }}</a>{% if not loop.last %},&nbsp;{% endif %}
           {% endfor %}
           <!-- end tags loop -->
 
