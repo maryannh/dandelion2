@@ -56,7 +56,7 @@
           <h5 class="mt-3">... by subject</h5>
           <!-- start subjects loop -->
           {% for subject in subjects|sort(attribute='count', reverse=True) %}
-          <a href="{{ config.BASE_URL }}/subject/{{ subject["slug"] }}">{{ subject["name"] }}</a>{% if not loop.last %},&nbsp;{% endif }
+          <a href="{{ config.BASE_URL }}/subject/{{ subject["slug"] }}">{{ subject["name"] }}</a>{% if not loop.last %},&nbsp;{% endif %}
           {% endfor %}
           <!-- end subjects loop -->
 
