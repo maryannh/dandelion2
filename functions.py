@@ -137,6 +137,7 @@ def get_labels(item_id):
     }
     return taxonomy      
     
+    
 def add_to_db(content_type):
     """ add content to Mongo DB """
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
@@ -157,6 +158,7 @@ def add_to_db(content_type):
         credits = None
         author = "Mary-Ann Horley"
         title = content.get("name", "NA")
+        text = content.get("desc", "NA")
         if content_type == "post":
             # attachments
             payload = {
@@ -169,6 +171,7 @@ def add_to_db(content_type):
             attachments = attachments_r.json()
             image = attachments[0]["url"]
             credits = get_credits(item_id)
+            
         taxonomy = get_labels(item_id)
         tags = taxonomy["tags"]
         subjects = taxonomy["subjects"]
@@ -177,7 +180,7 @@ def add_to_db(content_type):
                 "item_id": item_id,
                 "title": title,
                 "image": image,
-                "text": content.get("desc", "NA"),
+                "text": text,
                 "type": content_type,
                 "credits": credits,
                 "author": author,
