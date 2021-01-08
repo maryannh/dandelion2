@@ -16,7 +16,6 @@ app.config.from_pyfile('config.py', silent=True)
 
 basic_auth = BasicAuth(app)
 
-
 markdown = mistune.Markdown()
 
 def get_subjects():
