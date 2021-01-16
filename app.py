@@ -147,7 +147,7 @@ def delete_post(item_id):
 
 @app.route("/edit/post/<item_id>", methods=('GET', 'POST'))
 @basic_auth.required
-def add_post(item_id):
+def edit_post(item_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     # get existing values
     content = get_content(item_id)
