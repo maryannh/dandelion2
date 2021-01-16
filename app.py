@@ -165,7 +165,7 @@ def add_post(item_id):
           "updated": {
             "via": "flask",
             "date": datetime.now(),
-          }
+          },
           "type": "post",
           "title": form.title.data,
           "slug": slugify(form.title.data, separator='_'),
