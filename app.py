@@ -1,20 +1,27 @@
-from flask import Flask, render_template, request, url_for, redirect
-import requests
-import mistune
-import config
-from pymongo import MongoClient
-import pymongo
-import datetime
+from flask import Flask, render_template, request, url_for, redirect, flash
+from flask_bootstrap import Bootstrap
+from flask_basicauth import BasicAuth
+
 import os 
 import json
-# from dateutil import parser
-from functions import add_to_db
-from flask_basicauth import BasicAuth
+from datetime import datetime
+
+import requests
+import mistune
+from pymongo import MongoClient
+import pymongo
+from slugify import slugify 
+
+import config
+from functions import add_to_db, create_item_id, get_content
+from forms import PostForm
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py', silent=True)
 
 basic_auth = BasicAuth(app)
+
+bootstrap = Bootstrap(app)
 
 markdown = mistune.Markdown()
 
@@ -85,7 +92,99 @@ def index():
 @app.route("/admin")
 @basic_auth.required
 def admin():
-    return "logged in!"
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    # get all posts created within flask
+    posts = list(db.content.find({
+      "type": "post"
+    }))
+    return render_template("admin.html", posts=posts)
+
+@app.route("/add_post", methods=('GET', 'POST'))
+@basic_auth.required
+def add_post():
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    form = PostForm()
+    if form.validate_on_submit():
+        # split tag string
+        raw_tags = form.tags.data
+        tags = raw_tags.split(", ")
+        # split subject string 
+        raw_subjects = form.subjects.data
+        subjects = raw_subjects.split(", ")
+        # assemble data
+        info = {
+          "item_id": create_item_id(),
+          "via": "flask",
+          "date": datetime.now(),
+          "type": "post",
+          "title": form.title.data,
+          "slug": slugify(form.title.data, separator='_'),
+          "author": form.author.data,
+          "text": form.text.data,
+          "image": form.image.data,
+          "tags": tags,
+          "subjects": subjects,
+          "credits": {
+            "name": form.image_creator.data,
+            "url": form.image_creator_url.data,
+          }
+        }
+        # add data to db
+        post_id = db.content.insert_one(info).inserted_id
+        # add flashed message
+        flash('Post added successfully:' + post_id)
+        return render_template("add_post.html", form=form)
+    return render_template("add_post.html", form=form)
+
+@app.route("delete/post/<item_id>")
+@basic_auth.required
+def delete_post(item_id):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db.content.delete_one({"item_id": item_id})
+    # flashed message
+    flash('Post deleted successfully')
+    return redirect("/admin")
+
+@app.route("/edit/post/<item_id>", methods=('GET', 'POST'))
+@basic_auth.required
+def add_post(item_id):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    # get existing values
+    content = get_content(item_id)
+    form = PostForm(title=content["title"], text=content["text"], tags=content["tags"], subjects=content["subjects"], author=content["author"], image=content["image"], image_creator=content["image_creator"], image_creator_url=content["image_creator_url"]) # values in here https://stackoverflow.com/questions/42984453/wtforms-populate-form-with-data-if-data-exists
+    # add form submission
+    if form.validate_on_submit():
+        # split tag string
+        raw_tags = form.tags.data
+        tags = raw_tags.split(", ")
+        # split subject string 
+        raw_subjects = form.subjects.data
+        subjects = raw_subjects.split(", ")
+        # assemble data
+        info = {
+          "updated": {
+            "via": "flask",
+            "date": datetime.now(),
+          }
+          "type": "post",
+          "title": form.title.data,
+          "slug": slugify(form.title.data, separator='_'),
+          "author": form.author.data,
+          "text": form.text.data,
+          "image": form.image.data,
+          "tags": tags,
+          "subjects": subjects,
+          "credits": {
+            "name": form.image_creator.data,
+            "url": form.image_creator_url.data,
+          }
+        }
+        # add data to db
+        db.content.update_one({"item_id": item_id}, {"$set": info})
+        # add flashed message
+        flash('Post edited successfully')
+        return render_template("edit_post.html", form=form)
+return render_template("edit_post.html", form=form)
 
 @app.route("/subjects")
 def subjects():

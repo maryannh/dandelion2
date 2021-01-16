@@ -1,0 +1,35 @@
+{% extends 'base2.html' %}
+{% set active_page = "edit_post" %}
+
+{% block main_title %}
+Edit Post -
+{% endblock %}
+
+{% block body_class %}
+  <body class="admin"> 
+{% endblock %}
+
+{% block content %}
+        <!-- body content -->
+
+      <div class="row">
+        <div class="col-sm post mx-3">
+          <h2 class="text-center display-3">            Edit Post
+          </h2>
+
+          <div class="admin-text mx-auto">
+
+
+<!-- form -->
+{{ render_form(form) }}
+
+
+
+           </div>
+
+  
+
+        </div>
+      </div>
+        <!-- /end body content -->
+{% endblock %}

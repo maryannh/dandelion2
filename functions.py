@@ -8,7 +8,34 @@ import dns
 import json
 from validator_collection import validators, checkers
 from slugify import slugify 
+from random import choice
+from string import ascii_letters
 
+def get_content(item_id):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    post = list(db.content.find({
+      "item_id": item_id,
+    }))
+    title = post.get("title", "No title")
+    text = post.get("text", "No text")
+    author = post.get("author", "No author")
+    tags = str(post.get("tags", "No tags"))
+    subjects = str(post.get("subjects", "No subjects"))
+    image = post.get("image", "No image")
+    credits = post.get("credits")
+    image_creator = credits.get("name", "No creator name")
+    image_creator_url = credits.get("url", "No creator URL")
+    info = {
+      "title": title,
+      "text": text,
+      "author": author,
+      "tags": tags,
+      "subjects": subjects,
+      "image": image
+      "image_url": image_url,
+      "image_creator": image_creator,
+    }
+    return info
 
 
 
@@ -191,3 +218,6 @@ def add_to_db(content_type):
         # add to db
         post_id = db.content.insert_one(info).inserted_id
         print(str(post_id) + " " + str(content_type))
+
+def create_item_id():
+    return ''.join(choice(ascii_letters) for i in range(8))
