@@ -32,7 +32,7 @@ def get_content(item_id):
       "tags": tags,
       "subjects": subjects,
       "image": image,
-      "image_url": image_url,
+      "image_url": image_creator_url,
       "image_creator": image_creator,
     }
     return info
