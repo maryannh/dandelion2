@@ -31,7 +31,7 @@ def get_content(item_id):
       "author": author,
       "tags": tags,
       "subjects": subjects,
-      "image": image
+      "image": image,
       "image_url": image_url,
       "image_creator": image_creator,
     }
