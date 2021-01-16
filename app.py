@@ -136,7 +136,7 @@ def add_post():
         return render_template("add_post.html", form=form)
     return render_template("add_post.html", form=form)
 
-@app.route("delete/post/<item_id>")
+@app.route("/delete/post/<item_id>")
 @basic_auth.required
 def delete_post(item_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
