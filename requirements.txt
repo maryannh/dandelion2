@@ -32,3 +32,4 @@ urllib3==1.25.10
 validator-collection==1.5.0
 Werkzeug==1.0.1
 zipp==3.4.0
+Bootstrap-Flask==1.5.1
