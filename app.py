@@ -151,7 +151,7 @@ def edit_post(item_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     # get existing values
     content = get_content(item_id)
-    form = PostForm(title=content["title"], text=content["text"], tags=content["tags"], subjects=content["subjects"], author=content["author"], image=content["image"], image_creator=content["image_creator"], image_creator_url=content["image_creator_url"]) # values in here https://stackoverflow.com/questions/42984453/wtforms-populate-form-with-data-if-data-exists
+    form = PostForm(data=content)
     # add form submission
     if form.validate_on_submit():
         # split tag string
