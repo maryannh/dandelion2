@@ -13,9 +13,9 @@ from string import ascii_letters
 
 def get_content(item_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
-    post = list(db.content.find({
+    post = db.content.find_one({
       "item_id": item_id,
-    }))
+    })
     title = post.get("title", "No title")
     text = post.get("text", "No text")
     author = post.get("author", "No author")
