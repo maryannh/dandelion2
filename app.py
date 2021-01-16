@@ -101,7 +101,7 @@ def admin():
 
 @app.route("/add_post", methods=('GET', 'POST'))
 @basic_auth.required
-def add_post():
+def add_new_post():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     form = PostForm()
     if form.validate_on_submit():
