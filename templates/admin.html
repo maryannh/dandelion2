@@ -20,7 +20,7 @@
           <div class="admin-text mx-auto">
 
             <ul>
-          {% for post in posts %}
+          {% for post in posts|sort(reverse=true, attribute="date") %}
             <li>
               <a href="{{ config.BASE_URL }}/edit/post/{{ post["item_id"] }}">
               {{ post["title"] }}
