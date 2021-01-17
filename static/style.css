@@ -45,6 +45,11 @@ a:hover, a:visited, a:active {
         color: #5E81AC;
     }
 
+a.btn, a.btn:hover, a.btn:visited, a.btn:active {
+  color: white;
+  text-decoration: none;
+}
+
 /* post template */
 body.post h2 {
 

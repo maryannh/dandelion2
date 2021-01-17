@@ -16,6 +16,8 @@ Edit Post -
         <div class="col-sm post mx-3">
           <h2 class="text-center display-3">            Edit Post
           </h2>
+            <a href="{{ config.BASE_URL }}/delete/post/{{ post["item_id"] }}" role="button" class="btn btn-danger text-center">Delete</a>
+            <a class="btn btn-primary text-center" href="{{ config.BASE_URL }}/admin" role="button">Back to Admin</a>
 
           <div class="admin-text mx-auto">
 

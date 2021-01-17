@@ -27,6 +27,7 @@
             </a> 
             ({{ post["date"].strftime("%-d %B %Y") }}) 
             <a href="{{ config.BASE_URL }}/delete/post/{{ post["item_id"] }}" role="button" class="btn btn-danger btn-sm">Delete</a>
+            
             </li>
           {% endfor %}
           </ul>
