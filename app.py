@@ -184,7 +184,7 @@ def edit_post(item_id):
         # add flashed message
         flash('Post edited successfully')
         return render_template("edit_post.html", form=form)
-    return render_template("edit_post.html", form=form)
+    return render_template("edit_post.html", form=form, item_id=item_id)
 
 @app.route("/subjects")
 def subjects():
