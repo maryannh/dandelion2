@@ -36,20 +36,6 @@ h3 a:hover, h3 a:visited {
         color: #5E81AC;
     }
 
-a:link {
-        color: #4C566A;
-        text-decoration: underline;
-    }
-
-a:hover, a:visited, a:active {
-        color: #5E81AC;
-    }
-
-a.btn, a.btn:hover, a.btn:visited, a.btn:active {
-  color: white;
-  text-decoration: none;
-}
-
 /* post template */
 body.post h2 {
 

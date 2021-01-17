@@ -74,16 +74,25 @@ def index():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     post_loop = list(db.content.find({
         "type": "post"
-    }).sort("date", -1))
+    }).sort({
+      "date": -1, 
+      "_id": 1,
+      }).limit(10))
     page_loop = list(db.content.find({
         "type": "page"
     }))
     download_loop = list(db.content.find({
         "type": "download"
-    }).sort("date", -1))
+    }).sort({
+      "date": -1, 
+      "_id": 1,
+      }).limit(10))
     link_loop = list(db.content.find({
         "type": "link"
-    }).sort("date", -1))
+    }).sort({
+      "date": -1, 
+      "_id": 1,
+      }).limit(10))
     subjects = get_subjects()[:10]
     tags = get_tags()[:10]
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,

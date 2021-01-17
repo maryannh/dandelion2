@@ -15,7 +15,7 @@
         <div class="col-sm">
 
           <!-- start post loop -->
-          {% for post in post_loop[:10] %}
+          {% for post in post_loop %}
           <div class="post row mb-4">
               <div class="col-sm image">
                 <img src="{{ post["image"] }}" class="img-fluid mb-3" alt="{{ post["title"] }}" >
@@ -37,7 +37,7 @@
           <ul class="list-unstyled">
 
             <!-- start links loop -->
-            {% for link in link_loop[:10] %}
+            {% for link in link_loop %}
             <li><a href="{{ link["text"] }}">{{ link["title"] }}</a> <small>({{ link["text"].rpartition("//")[-1].partition("/")[0] }})</small></a>
             <p class="meta text-monospace small">{{ link["date"].strftime("%-d %B %Y") }}</p>
             </li>
