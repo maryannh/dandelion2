@@ -132,7 +132,7 @@ def add_new_post():
         # add data to db
         post_id = db.content.insert_one(info).inserted_id
         # add flashed message
-        flash('Post added successfully:' + post_id)
+        flash('Post added successfully')
         return render_template("add_post.html", form=form)
     return render_template("add_post.html", form=form)
 
