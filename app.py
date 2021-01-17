@@ -79,9 +79,11 @@ def index():
     page_loop = list(db.content.find({
         "type": "page"
     }))
+
     download_loop = list(db.content.find({
         "type": "download"
-    .sort([("date", -1), ("_id", 1)]).limit(10))
+    }).sort([("date", -1), ("_id", 1)]).limit(10))
+
     link_loop = list(db.content.find({
         "type": "link"
     }).sort([("date", -1), ("_id", 1)]).limit(10))
