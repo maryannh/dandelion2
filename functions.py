@@ -19,8 +19,8 @@ def get_content(item_id):
     title = post.get("title", "No title")
     text = post.get("text", "No text")
     author = post.get("author", "No author")
-    tags = str(post.get("tags", "No tags"))
-    subjects = str(post.get("subjects", "No subjects"))
+    tags = post.get("tags", "No tags")
+    subjects = post.get("subjects", "No subjects")
     image = post.get("image", "No image")
     credits = post.get("credits")
     image_creator = credits.get("name", "No creator name")
@@ -29,8 +29,8 @@ def get_content(item_id):
       "title": title,
       "text": text,
       "author": author,
-      "tags": tags,
-      "subjects": subjects,
+      "tags": ', '.join(str(x) for x in tags),
+      "subjects": ', '.join(str(x) for x in subjects),
       "image": image,
       "image_creator_url": image_creator_url,
       "image_creator": image_creator,
