@@ -79,7 +79,7 @@ def get_tags():
       "count_time": tag_count_time,
     }
     db.log.insert_one(info)
-    
+
     return tags
 
 @app.errorhandler(404)
@@ -121,31 +121,18 @@ def index():
     end = time.time()
     link_loop_time = end - start
 
-    start = time.time()
-    subjects = get_subjects()[:10]
-    end = time.time()
-    subjects_time = end - start
+    # start = time.time()
+    # subjects = get_subjects()[:10]
+    # end = time.time()
+    # subjects_time = end - start
 
-    start = time.time()
-    tags = get_tags()[:10]
-    end = time.time()
-    tags_time = end - start
-
-    info = {
-      "function": "index",
-      "db": db_time,
-      "posts": post_loop_time,
-      "pages": page_loop_time,
-      "downloads": download_loop_time,
-      "links": link_loop_time,
-      "subjects": subjects_time,
-      "tags": tags_time,
-    }
-
-    db.log.insert_one(info)
+    # start = time.time()
+    # tags = get_tags()[:10]
+    # end = time.time()
+    # tags_time = end - start
 
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
-        download_loop=download_loop, link_loop=link_loop, subjects=subjects, tags=tags)
+        download_loop=download_loop, link_loop=link_loop)
 
 @app.route("/admin")
 @basic_auth.required
