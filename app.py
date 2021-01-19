@@ -126,7 +126,7 @@ def index():
       "tags": tags_time,
     }
 
-    db.log.update_one(info)
+    db.log.insert_one(info)
 
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop, subjects=subjects, tags=tags)
