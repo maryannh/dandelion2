@@ -48,13 +48,18 @@ def get_subjects():
 def get_tags():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
 
+    start = time.time()
     tag_list = list(db.tags.find())
+    end = time.time()
+    tag_list_time = end - start
 
     tags = []
     
+    start = time.time()
     for tag in tag_list:
         slug = tag["slug"]
         name = tag["name"]
+        
         count = db.content.count({
           "tags": slug
           })
@@ -65,6 +70,16 @@ def get_tags():
             "count": count,
           }
           tags.append(info)
+    end = time.time()
+    tag_count_time = end - start
+
+    info = {
+      "function": "get_tags",
+      "list_time": tag_list_time,
+      "count_time": tag_count_time,
+    }
+    db.log.insert_one(info)
+    
     return tags
 
 @app.errorhandler(404)
@@ -117,6 +132,7 @@ def index():
     tags_time = end - start
 
     info = {
+      "function": "index",
       "db": db_time,
       "posts": post_loop_time,
       "pages": page_loop_time,
