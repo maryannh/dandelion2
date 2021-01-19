@@ -41,6 +41,10 @@ body.post h2 {
 
 }
 
+img.hero {
+  display: block;
+}
+
 div.post-text {
   font-size: 1.25rem;
 }

@@ -12,11 +12,11 @@
 {% block content %}
        
  <div class="row">
-        <div class="col-sm post mx-3">
+        <div class="col-sm post mx-3 clearfix">
           <h2 class="text-center display-3">{{ info["title"] }}</h2>
           <p class="meta text-monospace small text-center">{{ info["date"].strftime("%-d %B %Y") }}</p>
-         <img src="{{ info["image"] }}" class="img-fluid mb-3" alt="{{ info["title"] }}">
-         <small class="mx-auto">
+         <img src="{{ info["image"] }}" class="img-fluid mb-3 hero mx-auto" alt="{{ info["title"] }}">
+         <small class="text-center">
             Photo by <a href="{{ info["credits"]["url"] }}">{{ info["credits"]["name"] }}</a>
         </small>
 
