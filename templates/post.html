@@ -5,6 +5,23 @@
   {{ info["title"] }} -
 {% endblock %}
 
+
+<!-- https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/remote_media/sample.jpg 
+
+or
+
+https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611072704/sample.jpg
+
+if needed -->
+
+{% block ogtags %}
+<meta property="og:title" content="{{ info["title"] }} - Dandelion">
+<meta property="og:description" content="{{ info["text"]|truncate(120)|striptags }}">
+<meta property="og:image" content="{{ info["image"] }}">
+<meta property="og:url" content="{{ config.BASE_URL }}/post/{{ info["item_id"] }}">
+<meta name="twitter:card" content="{{ info["image"] }}"> <!-- less than 1mb -->
+{% endblock %}
+
 {% block body_class %}
   <body class="post {{ info["slug"] }}"> 
 {% endblock %}

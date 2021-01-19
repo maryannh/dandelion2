@@ -5,6 +5,7 @@ from flask_basicauth import BasicAuth
 import os 
 import json
 from datetime import datetime
+import time
 
 import requests
 import mistune
@@ -46,6 +47,7 @@ def get_subjects():
 
 def get_tags():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+
     tag_list = list(db.tags.find())
 
     tags = []
@@ -71,24 +73,61 @@ def page_not_found(e):
 
 @app.route("/")
 def index():
+    start = time.time()
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    end = time.time()
+    db_time = end - start
+
+    start = time.time()
     post_loop = list(db.content.find({
         "type": "post"
     }).sort([("date", -1), ("_id", 1)]).limit(10))
+    end = time.time()
+    post_loop_time = end - start
       
+    start = time.time()
     page_loop = list(db.content.find({
         "type": "page"
     }))
+    end = time.time()
+    page_loop_time = end - start
 
+    start = time.time()
     download_loop = list(db.content.find({
         "type": "download"
     }).sort([("date", -1), ("_id", 1)]).limit(10))
+    end = time.time()
+    download_loop_time = end - start
 
+    start = time.time()
     link_loop = list(db.content.find({
         "type": "link"
     }).sort([("date", -1), ("_id", 1)]).limit(10))
+    end = time.time()
+    link_loop_time = end - start
+
+    start = time.time()
     subjects = get_subjects()[:10]
+    end = time.time()
+    subjects_time = end - start
+
+    start = time.time()
     tags = get_tags()[:10]
+    end = time.time()
+    tags_time = end - start
+
+    info = {
+      "db": db_time,
+      "posts": post_loop_time,
+      "pages": page_loop_time,
+      "downloads": download_loop_time,
+      "links": link_loop_time,
+      "subjects": subjects_time,
+      "tags": tags_time,
+    }
+
+    db.log.update_one(info)
+
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop, subjects=subjects, tags=tags)
 

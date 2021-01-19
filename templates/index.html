@@ -4,6 +4,14 @@
 {% block main_title %}
 {% endblock %}
 
+{% block ogtags %}
+<meta property="og:title" content="Dandelion">
+<meta property="og:description" content="Blog about hone education and learning">
+<meta property="og:image" content="https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611071200/kathy-morales-ebbGG4a9go0-unsplash.jpg">
+<meta property="og:url" content="{{ config.BASE_URL }}">
+<meta name="twitter:card" content="https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611071200/kathy-morales-ebbGG4a9go0-unsplash.jpg"> <!-- less than 1mb -->
+{% endblock %}
+
 {% block body_class %}
   <body class="index"> 
 {% endblock %}
