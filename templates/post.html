@@ -19,7 +19,7 @@ if needed -->
 <meta property="og:description" content="{{ info["text"]|truncate(120)|striptags }}">
 <meta property="og:image" content="{{ info["image"] }}">
 <meta property="og:url" content="{{ config.BASE_URL }}/post/{{ info["item_id"] }}">
-<meta name="twitter:card" content="{{ info["image"] }}"> <!-- less than 1mb -->
+<meta name="twitter:card" content="summary_large_image"> 
 {% endblock %}
 
 {% block body_class %}
