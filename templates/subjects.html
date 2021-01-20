@@ -5,6 +5,14 @@
   Subjects -
 {% endblock %}
 
+{% block ogtags %}
+<meta property="og:title" content="Subjects - Dandelion">
+<meta property="og:description" content="An index of the educational subjects we have covered on Dandelion - maths, English, science and many more">
+<meta property="og:image" content="https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611071200/kathy-morales-ebbGG4a9go0-unsplash.jpg">
+<meta property="og:url" content="{{ config.BASE_URL }}/subjects">
+<meta name="twitter:card" content="https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611071200/kathy-morales-ebbGG4a9go0-unsplash.jpg"> <!-- less than 1mb -->
+{% endblock %}
+
 {% block body_class %}
   <body class="subjects page"> 
 {% endblock %}

@@ -5,6 +5,14 @@
   Tags -
 {% endblock %}
 
+{% block ogtags %}
+<meta property="og:title" content="Tags - Dandelion">
+<meta property="og:description" content="An index of the topics we have covered on Dandelion">
+<meta property="og:image" content="https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611071200/kathy-morales-ebbGG4a9go0-unsplash.jpg">
+<meta property="og:url" content="{{ config.BASE_URL }}/tags">
+<meta name="twitter:card" content="https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611071200/kathy-morales-ebbGG4a9go0-unsplash.jpg"> <!-- less than 1mb -->
+{% endblock %}
+
 {% block body_class %}
   <body class="tags page"> 
 {% endblock %}

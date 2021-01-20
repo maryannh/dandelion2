@@ -223,8 +223,6 @@ def subjects():
 
 @app.route("/tags")
 def tags():
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
-
     tags = get_tags()
 
     return render_template("tags.html", tags=tags)
@@ -344,7 +342,7 @@ def download(page_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])
-    return render_template("page.html", info=info, text=text)
+    return render_template("download.html", info=info, text=text)
 
 # if __name__ == '__main__':
     # app.run(debug=True, host='0.0.0.0')
