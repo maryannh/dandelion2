@@ -62,7 +62,7 @@
 
             <!-- start downloads loop -->
             {% for download in download_loop %}
-            <li><a href="{{ config.BASE_URL }}/download/{{ post["item_id"] }}">{{ download["title"] }}</a>
+            <li><a href="{{ config.BASE_URL }}/download/{{ download["item_id"] }}">{{ download["title"] }}</a>
             </li>
             {% endfor %}
             <!-- end downloads loop -->
