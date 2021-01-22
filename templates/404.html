@@ -1,24 +1,42 @@
-{% extends 'single_base.html' %}
+{% extends 'base2.html' %}
+{% set active_page = info["slug"] %}
 
 {% block main_title %}
-    404 not found -
+  {{ info["title"] }} -
 {% endblock %}
 
+{% block ogtags %}
+<meta property="og:title" content="{{ info["title"] }} - Dandelion">
+<meta property="og:description" content="{{ info["text"]|truncate(120)|striptags }}">
+<meta property="og:image" content="https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611071200/kathy-morales-ebbGG4a9go0-unsplash.jpg">
+<meta property="og:url" content="{{ config.BASE_URL }}/page/{{ info["item_id"] }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="article"> <!-- less than 1mb -->
+{% endblock %}
 
 {% block body_class %}
-<body class="post">
-{% endblock %}
-
-{% block header %}
-    
-    <h2>
-Page not found :(
-    </h2>
-    
-    
+  <body class="page {{ info["slug"] }}"> 
 {% endblock %}
 
 {% block content %}
-<p>What you were looking for is just not there.
-  <p><a href="{{ url_for('index') }}">go somewhere nice</a>    
+        <!-- body content -->
+
+      <div class="row">
+        <div class="col-sm post mx-3">
+          <h2 class="text-center display-3">Page not found</h2>
+
+          <div class="tag-text mx-auto">
+
+
+            <p>Sorry, the page you are looking for has moved or doesn't exist. Please go back to the homepage.</p>
+
+
+
+           </div>
+
+  
+
+        </div>
+      </div>
+        <!-- /end body content -->
 {% endblock %}
