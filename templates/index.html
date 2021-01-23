@@ -32,7 +32,22 @@
               <div class="col-sm text">
                 <h3><a href="{{ config.BASE_URL }}/post/{{ post["item_id"] }}">{{ post["title"] }}</a></h3>
                 <p class="meta text-monospace small mt-0">{{ post["date"].strftime("%-d %B %Y") }}</p>
-            <p>{{ post["text"]|truncate(120)|striptags }} </p>          </div>
+
+
+            <p>
+              {% if post["intro"] %}
+
+              {{ post["intro"] }}
+
+              {% else %}
+
+              {{ post["text"]|truncate(120)|striptags }} 
+              
+              {% endif %}
+
+              </p> 
+            
+                     </div>
           </div>
           {% endfor %}
           <!-- end post loop -->
