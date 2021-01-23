@@ -18,6 +18,7 @@ def get_content(item_id):
     })
     title = post.get("title", "No title")
     text = post.get("text", "No text")
+    intro = post.get("intro", "No text")
     author = post.get("author", "No author")
     tags = post.get("tags", "No tags")
     subjects = post.get("subjects", "No subjects")
@@ -28,6 +29,7 @@ def get_content(item_id):
     info = {
       "title": title,
       "text": text,
+      "intro": intro,
       "author": author,
       "tags": ', '.join(str(x) for x in tags),
       "subjects": ', '.join(str(x) for x in subjects),
