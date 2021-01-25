@@ -26,6 +26,30 @@ bootstrap = Bootstrap(app)
 
 markdown = mistune.Markdown()
 
+def get_item_tags(item_id):
+    raw_tags = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
+    tags = []
+    for tag in raw_tags:
+      tag_info = db.tags.find_one({"name": tag})
+      info = {
+        "name": tag["name"],
+        "slug": tag_info["slug"]
+      }
+      tags.append(info)
+      return tags
+
+def get_item_subjects(item_id):
+    raw_subjects = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
+    subjects = []
+    for subject in raw_subjects:
+      subject_info = db.tags.find_one({"name": subject})
+      info = {
+        "name": subject["name"],
+        "slug": subject_info["slug"]
+      }
+      subjects.append(info)
+      return subjects
+
 def get_subjects():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     subject_list = list(db.subjects.find())
@@ -330,7 +354,9 @@ def post(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": post_id})
     text = markdown(info["text"])
-    return render_template("post.html", info=info, text=text)
+    tags = get_item_tags(post_id)
+    subjects = get_item_subjects(post_id)
+    return render_template("post.html", info=info, text=text, tags=tags, subjects=subjects)
 
 @app.route("/page/<page_id>")
 def page(page_id):
