@@ -27,6 +27,7 @@ bootstrap = Bootstrap(app)
 markdown = mistune.Markdown()
 
 def get_item_tags(item_id):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     raw_tags = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
     tags = []
     for tag in raw_tags:
@@ -39,6 +40,7 @@ def get_item_tags(item_id):
       return tags
 
 def get_item_subjects(item_id):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     raw_subjects = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
     subjects = []
     for subject in raw_subjects:
