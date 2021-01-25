@@ -356,8 +356,8 @@ def post(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
     info = db.content.find_one({"item_id": post_id})
     text = markdown(info["text"])
-    tags = get_item_tags(post_id)
-    subjects = get_item_subjects(post_id)
+    # tags = get_item_tags(post_id)
+    # subjects = get_item_subjects(post_id)
     return render_template("post.html", info=info, text=text, tags=tags, subjects=subjects)
 
 @app.route("/page/<page_id>")
