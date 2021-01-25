@@ -33,7 +33,7 @@ def get_item_tags(item_id):
     for tag in raw_tags:
       tag_info = db.tags.find_one({"name": tag})
       info = {
-        "name": tag["name"],
+        "name": tag,
         "slug": tag_info["slug"]
       }
       tags.append(info)
@@ -46,7 +46,7 @@ def get_item_subjects(item_id):
     for subject in raw_subjects:
       subject_info = db.tags.find_one({"name": subject})
       info = {
-        "name": subject["name"],
+        "name": subject,
         "slug": subject_info["slug"]
       }
       subjects.append(info)
