@@ -28,7 +28,7 @@ bootstrap = Bootstrap(app)
 markdown = mistune.Markdown()
 
 def get_item_tags(item_id):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     raw_tags = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
     tags = []
     for tag in raw_tags:
@@ -41,7 +41,7 @@ def get_item_tags(item_id):
       return tags
 
 def get_item_subjects(item_id):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     raw_subjects = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
     subjects = []
     for subject in raw_subjects:
@@ -54,7 +54,7 @@ def get_item_subjects(item_id):
       return subjects
 
 def get_subjects():
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     subject_list = list(db.subjects.find())
     subjects = []
     for subject in subject_list:
@@ -73,7 +73,7 @@ def get_subjects():
     return subjects
 
 def get_tags():
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
 
     start = time.time()
     tag_list = list(db.tags.find())
@@ -116,7 +116,7 @@ def page_not_found(e):
 @app.route("/")
 def index():
     start = time.time()
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     
     post_loop = list(db.content.find({
         "type": "post"
@@ -158,7 +158,7 @@ def add():
 @app.route("/admin")
 @basic_auth.required
 def admin():
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     # get all posts created within flask
     posts = list(db.content.find({
       "type": "post"
@@ -168,7 +168,7 @@ def admin():
 @app.route("/add_post", methods=('GET', 'POST'))
 @basic_auth.required
 def add_new_post():
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     form = PostForm()
     if form.validate_on_submit():
         # split tag string
@@ -213,7 +213,7 @@ def add_new_post():
 @app.route("/delete/post/<item_id>")
 @basic_auth.required
 def delete_post(item_id):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     db.content.delete_one({"item_id": item_id})
     # flashed message
     flash('Post deleted successfully')
@@ -222,7 +222,7 @@ def delete_post(item_id):
 @app.route("/edit/post/<item_id>", methods=('GET', 'POST'))
 @basic_auth.required
 def edit_post(item_id):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     # get existing values
     content = get_content(item_id)
     form = PostForm(data=content)
@@ -278,7 +278,7 @@ def about():
 
 @app.route("/cron")
 def cron():
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     end = time.time()
     add_to_db("post")
     add_to_db("link")
@@ -288,22 +288,9 @@ def cron():
     time_taken = end - start
     return render_template("cron.html", time_taken=time_taken)
 
-@app.route("/why")
-def why():
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
-    posts = list(db.content.find({
-        "type": "post",
-        "tags": {"$in": ["why_and_how"] }
-    }).sort("date", -1))
-    links = list(db.content.find({
-        "type": "link",
-        "tags": {"$in": ["why_and_how"] }
-    }).sort("date", -1))
-    return render_template("why.html", links=links, posts=posts)
-
 @app.route("/tag/<tag>")
 def tag(tag):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
 
     posts_query = db.content.find({
         "type": "post",
@@ -338,7 +325,7 @@ def tag(tag):
 @app.route("/subject/<subject>")
 def subject(subject):
 
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
 
     posts_query = db.content.find({
         "type": "post",
@@ -382,14 +369,14 @@ def post(post_id):
 
 @app.route("/page/<page_id>")
 def page(page_id):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])
     return render_template("page.html", info=info, text=text)
 
 @app.route("/download/<page_id>")
 def download(page_id):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])
     return render_template("download.html", info=info, text=text)

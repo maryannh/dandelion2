@@ -14,7 +14,7 @@ from bson.objectid import ObjectId
 
 
 def get_content(item_id):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     post = db.content.find_one({
       "item_id": item_id,
     })
@@ -71,7 +71,7 @@ def all_content_ids(content_type):
 
 def imported_ids(content_type):
     """ gets a list of Trello IDs of all the content already in Mongo """
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     content = list(db.content.find({"type": content_type }))
     ids = []
     for item in content:
@@ -112,7 +112,7 @@ def get_credits(item_id):
     }  
 
 def add_tag(name, slug):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     filter = { "slug": slug }
     info = { 
       "name": name,
@@ -127,7 +127,7 @@ def add_tag(name, slug):
       )
 
 def add_subject(name, slug):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     filter = { "slug": slug }
     info = { 
       "name": name,
@@ -174,26 +174,26 @@ def get_labels(item_id):
     return taxonomy 
 
 def add_to_tax(content_id):
-  db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
-  content = db.content.find_one({"_id": ObjectId(content_id)})
-  content_type = content["type"]
-  if content["tags"]:
-    for tag in content["tags"]:
-      db.tags.update_one(
-        {"slug": tag}, 
-        {"$addToSet": {content_type + "s": ObjectId(content_id)}}
-      ) 
-  if content["subjects"]:
-    for subject in content["subjects"]:
-      db.subjects.update_one(
-        {"slug": subject},
-        {"$addToSet": {content_type + "s": ObjectId(content_id)}}
-      ) 
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+    content = db.content.find_one({"_id": ObjectId(content_id)})
+    content_type = content["type"]
+    if content["tags"]:
+        for tag in content["tags"]:
+            db.tags.update_one(
+            {"slug": tag}, 
+            {"$addToSet": {content_type + "s": ObjectId(content_id)}}
+        ) 
+    if content["subjects"]:
+        for subject in content["subjects"]:
+            db.subjects.update_one(
+            {"slug": subject},
+            {"$addToSet": {content_type + "s": ObjectId(content_id)}}
+        ) 
     
     
 def add_to_db(content_type):
     """ add content to Mongo DB """
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     payload = {
         'key': config.TRELLO_KEY,
         'token': config.TRELLO_TOKEN,
