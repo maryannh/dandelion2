@@ -14,7 +14,8 @@ import pymongo
 from slugify import slugify 
 
 import config
-from functions import add_to_db, create_item_id, get_content
+from functions import add_to_db, create_item_id, get_content, add_to_tax, add_subject, add_tag
+from taxonomy import add_existing_to_tax
 from forms import PostForm
 
 app = Flask(__name__)
@@ -145,6 +146,15 @@ def index():
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
 
+@app.route("/add")
+@basic_auth.required
+def add():
+    start = time.time()
+    add_existing_to_tax()
+    end = time.time()
+    time_taken = end - start
+    return render_template("cron.html", time_taken=time_taken)
+
 @app.route("/admin")
 @basic_auth.required
 def admin():
@@ -164,9 +174,15 @@ def add_new_post():
         # split tag string
         raw_tags = form.tags.data
         tags = raw_tags.split(", ")
+        for tag in tags:
+            slugify(tag)
+            add_tag(tag, slugify(tag, separator='_'))
         # split subject string 
         raw_subjects = form.subjects.data
         subjects = raw_subjects.split(", ")
+        for subject in subjects:
+            slugify(subject)
+            add_tag(subject, slugify(subject, separator='_'))
         # assemble data
         info = {
           "item_id": create_item_id(),
@@ -188,6 +204,7 @@ def add_new_post():
         }
         # add data to db
         post_id = db.content.insert_one(info).inserted_id
+        add_to_tax(post_id)
         # add flashed message
         flash('Post added successfully')
         return render_template("add_post.html", form=form)
@@ -239,6 +256,7 @@ def edit_post(item_id):
         }
         # add data to db
         db.content.update_one({"item_id": item_id}, {"$set": info})
+        add_to_tax(item_id)
         # add flashed message
         flash('Post edited successfully')
         return render_template("edit_post.html", form=form)
@@ -252,7 +270,6 @@ def subjects():
 @app.route("/tags")
 def tags():
     tags = get_tags()
-
     return render_template("tags.html", tags=tags)
 
 @app.route("/about")
@@ -262,11 +279,14 @@ def about():
 @app.route("/cron")
 def cron():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    end = time.time()
     add_to_db("post")
     add_to_db("link")
     add_to_db("download")
     add_to_db("page")
-    return render_template("cron.html")
+    end = time.time()
+    time_taken = end - start
+    return render_template("cron.html", time_taken=time_taken)
 
 @app.route("/why")
 def why():

@@ -10,6 +10,8 @@ from validator_collection import validators, checkers
 from slugify import slugify 
 from random import choice
 from string import ascii_letters
+from bson.objectid import ObjectId
+
 
 def get_content(item_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
@@ -118,7 +120,9 @@ def add_tag(name, slug):
       }
     db.tags.update_one(
       filter, 
-      {"$set": info}, 
+      {
+        "$set": info,
+      }, 
       upsert=True
       )
 
@@ -131,7 +135,10 @@ def add_subject(name, slug):
       }
     db.subjects.update_one(
       filter, 
-      {"$set": info}, 
+      {
+        "$set": info,
+        "$inc": {"count": 1}
+      }, 
       upsert=True
       )
 
@@ -164,7 +171,24 @@ def get_labels(item_id):
         "tags": tags,
         "subjects": subjects,
     }
-    return taxonomy      
+    return taxonomy 
+
+def add_to_tax(content_id):
+  db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+  content = db.content.find_one({"_id": ObjectId(content_id)})
+  content_type = content["type"]
+  if content["tags"]:
+    for tag in content["tags"]:
+      db.tags.update_one(
+        {"slug": tag}, 
+        {"$addToSet": {content_type + "s": ObjectId(content_id)}}
+      ) 
+  if content["subjects"]:
+    for subject in content["subjects"]:
+      db.subjects.update_one(
+        {"slug": subject},
+        {"$addToSet": {content_type + "s": ObjectId(content_id)}}
+      ) 
     
     
 def add_to_db(content_type):
@@ -219,6 +243,7 @@ def add_to_db(content_type):
             }
         # add to db
         post_id = db.content.insert_one(info).inserted_id
+        add_to_tax(post_id)
         print(str(post_id) + " " + str(content_type))
 
 def create_item_id():
