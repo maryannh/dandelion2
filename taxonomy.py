@@ -2,6 +2,8 @@ from pymongo import MongoClient
 import dns
 from bson.objectid import ObjectId
 from functions import add_to_tax
+import config
+import os
 
 def add_existing_to_tax():
   db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
