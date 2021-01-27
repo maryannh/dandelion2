@@ -14,7 +14,7 @@ import pymongo
 from slugify import slugify 
 
 import config
-from functions import add_to_db, create_item_id, get_content, add_to_tax, add_subject, add_tag
+from functions import add_to_db, create_item_id, get_content, add_to_tags, add_to_subjects, add_subject, add_tag
 from taxonomy import add_existing_to_tax
 from forms import PostForm
 
@@ -182,7 +182,7 @@ def add_new_post():
         subjects = raw_subjects.split(", ")
         for subject in subjects:
             slugify(subject)
-            add_tag(subject, slugify(subject, separator='_'))
+            add_subject(subject, slugify(subject, separator='_'))
         # assemble data
         info = {
           "item_id": create_item_id(),
@@ -204,7 +204,8 @@ def add_new_post():
         }
         # add data to db
         post_id = db.content.insert_one(info).inserted_id
-        add_to_tax(post_id)
+        print(add_to_tags(post_id))
+        print(add_to_subjects(post_id))
         # add flashed message
         flash('Post added successfully')
         return render_template("add_post.html", form=form)
@@ -381,5 +382,5 @@ def download(page_id):
     text = markdown(info["text"])
     return render_template("download.html", info=info, text=text)
 
-# if __name__ == '__main__':
-    # app.run(debug=True, host='0.0.0.0')
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')

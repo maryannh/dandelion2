@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 import dns
 from bson.objectid import ObjectId
-from functions import add_to_tax
 import config
 import os
 
