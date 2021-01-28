@@ -173,23 +173,29 @@ def get_labels(item_id):
     }
     return taxonomy 
 
-def add_to_tax(content_id):
+def add_to_tags(content_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     content = db.content.find_one({"_id": ObjectId(content_id)})
     content_type = content["type"]
     if content["tags"]:
         for tag in content["tags"]:
-            db.tags.update_one(
+            result = db.tags.update_one(
             {"slug": tag}, 
             {"$addToSet": {content_type + "s": ObjectId(content_id)}}
         ) 
+            return result.acknowledged
+    
+def add_to_subjects(content_id):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+    content = db.content.find_one({"_id": ObjectId(content_id)})
+    content_type = content["type"]
     if content["subjects"]:
         for subject in content["subjects"]:
-            db.subjects.update_one(
+            result = db.subjects.update_one(
             {"slug": subject},
             {"$addToSet": {content_type + "s": ObjectId(content_id)}}
         ) 
-    
+            return result.acknowledged
     
 def add_to_db(content_type):
     """ add content to Mongo DB """
