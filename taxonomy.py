@@ -5,6 +5,31 @@ from functions import add_to_tax
 import config
 import os
 
+def get_tax_info(slug, tax_type):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+    if tax_type == "tag":
+        tax = db.tag.find_one({
+          "slug": slug,
+        })
+    elif tax_type == "subject":
+        tax = db.subject.find_one({
+          "slug": slug,
+        })
+    name = tax.get("name", "No name")
+    description = tax.get("description", "No description")
+    image = tax.get("image", "No image")
+    credits = tax.get("credits")
+    image_creator = credits.get("name", "No creator name")
+    image_creator_url = credits.get("url", "No creator URL")
+    info = {
+      "name": name,
+      "description": description,
+      "image": image,
+      "image_creator": image_creator,
+      "image_creator_url": image_creator_url,
+    }
+    return info
+
 def add_existing_to_tax():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     posts = list(db.content.find({"type": "post"}))

@@ -13,3 +13,11 @@ class PostForm(FlaskForm):
     image_creator = StringField('Image creator')
     image_creator_url = StringField('Image creator URL')
     submit_button = SubmitField('Submit Post')
+
+class TaxForm(FlaskForm):
+    name = StringField("Name", validators=[DataRequired()])
+    description = TextAreaField("Description")
+    image = StringField("Image URL")
+    image_creator = StringField('Image creator')
+    image_creator_url = StringField('Image creator URL')
+    submit_button = SubmitField('Submit Post')

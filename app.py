@@ -15,8 +15,8 @@ from slugify import slugify
 
 import config
 from functions import add_to_db, create_item_id, get_content, add_to_tax, add_subject, add_tag
-from taxonomy import add_existing_to_tax
-from forms import PostForm
+from taxonomy import add_existing_to_tax, get_tax_info
+from forms import PostForm, TaxForm
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py', silent=True)
@@ -146,15 +146,6 @@ def index():
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
 
-@app.route("/add")
-@basic_auth.required
-def add():
-    start = time.time()
-    add_existing_to_tax()
-    end = time.time()
-    time_taken = end - start
-    return render_template("cron.html", time_taken=time_taken)
-
 @app.route("/admin")
 @basic_auth.required
 def admin():
@@ -218,6 +209,37 @@ def delete_post(item_id):
     # flashed message
     flash('Post deleted successfully')
     return redirect("/admin")
+
+@app.route("/edit/tag/<slug>", methods=('GET', 'POST'))
+@basic_auth.required
+def edit_tag(slug):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+    # get existing tag details
+    content = get_tax_info(slug, "tag")
+    form = PostForm(data=content)
+    if form.validate_on_submit():
+        name = form.name.data
+        description = form.description.data
+        image = form.image.data
+        image_creator = form.image_creator.data
+        image_creator_url = form.image_creator_url.data
+        info = {
+            "updated": {
+                "via": "flask",
+                "date": datetime.now(),
+              },
+            "name": name,
+            "description": description,
+            "image": image,
+            "credits": {
+                "name": form.image_creator.data,
+                "url": form.image_creator_url.data,
+                }
+              }
+        db.tags.update_one({"slug": slug}, {"$set": info})
+        flash('Tag edited successfully')
+        return render_template("edit_tax.html", form=form)
+    return render_template("edit_tax.html", form=form)
 
 @app.route("/edit/post/<item_id>", methods=('GET', 'POST'))
 @basic_auth.required
