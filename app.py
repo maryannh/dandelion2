@@ -14,15 +14,12 @@ import pymongo
 from slugify import slugify 
 
 import config
-<<<<<<< HEAD
 from functions import add_to_db, create_item_id, get_content, add_to_tax, add_subject, add_tag
 from taxonomy import add_existing_to_tax, get_tax_info
 from forms import PostForm, TaxForm
-=======
 from functions import add_to_db, create_item_id, get_content, add_to_tags, add_to_subjects, add_subject, add_tag
 from taxonomy import add_existing_to_tax
 from forms import PostForm
->>>>>>> origin/master
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py', silent=True)
@@ -410,5 +407,5 @@ def download(page_id):
     text = markdown(info["text"])
     return render_template("download.html", info=info, text=text)
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+# if __name__ == '__main__':
+    # app.run(debug=True, host='0.0.0.0')
