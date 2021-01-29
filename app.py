@@ -14,12 +14,9 @@ import pymongo
 from slugify import slugify 
 
 import config
-from functions import add_to_db, create_item_id, get_content, add_to_tax, add_subject, add_tag
 from taxonomy import add_existing_to_tax, get_tax_info
 from forms import PostForm, TaxForm
 from functions import add_to_db, create_item_id, get_content, add_to_tags, add_to_subjects, add_subject, add_tag
-from taxonomy import add_existing_to_tax
-from forms import PostForm
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py', silent=True)
