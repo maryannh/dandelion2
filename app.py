@@ -14,7 +14,7 @@ import pymongo
 from slugify import slugify 
 
 import config
-from taxonomy import add_existing_to_tax, get_tax_info
+from taxonomy import add_existing_to_tax, get_tax_info, get_content_from_taxonomy
 from forms import PostForm, TaxForm
 from functions import add_to_db, create_item_id, get_content, add_to_tags, add_to_subjects, add_subject, add_tag
 
@@ -315,71 +315,23 @@ def cron():
 def tag(tag):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
 
-    posts_query = db.content.find({
-        "type": "post",
-        "tags": {"$in": [tag] }
-    }).sort("date", -1)
-    posts = None
-    if posts_query != None:
-        posts = list(posts_query)
+    # get tag into including header image
+    info = db.tags.find_one({ "slug": tag })
 
-    links_query = db.content.find({
-        "type": "link",
-        "tags": {"$in": [tag] }
-    }).sort("date", -1)
-    links = None
-    if links_query != None:
-        links = list(links_query)
+    content = get_content_from_taxonomy("tags")
 
-    downloads_query = db.content.find({
-        "type": "download",
-        "tags": {"$in": [tag] }
-    }).sort("date", -1)
-    downloads = None
-    if downloads_query != None:
-        downloads = list(downloads_query)
-
-    info = db.tags.find_one({
-        "slug": tag,
-    })
-
-    return render_template("tag.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
+    return render_template("tag.html", content=content, info=info)
 
 @app.route("/subject/<subject>")
 def subject(subject):
 
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
 
-    posts_query = db.content.find({
-        "type": "post",
-        "subjects": {"$in": [subject] }
-    }).sort("date", -1)
-    posts = None
-    if posts_query != None:
-        posts = list(posts_query)
-    # if there's no posts, this needs to return none
+    info = db.subjects.find_one({ "slug": tag })
 
-    links_query = db.content.find({
-        "type": "link",
-        "subjects": {"$in": [subject] }
-    }).sort("date", -1)
-    links = None
-    if links_query != None:
-        links = list(links_query)
+    content = get_content_from_taxonomy("subjects")
 
-    downloads_query = db.content.find({
-        "type": "download",
-        "subjects": {"$in": [subject] }
-    }).sort("date", -1)
-    downloads = None
-    if downloads_query != None:
-        downloads = list(downloads_query)
-
-    info = db.subjects.find_one({
-        "slug": subject,
-    })
-
-    return render_template("subject.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
+    return render_template("subject.html", content=content, info=info)
 
 @app.route("/post/<post_id>")
 def post(post_id):

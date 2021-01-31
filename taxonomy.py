@@ -68,3 +68,64 @@ def add_existing_to_tax():
                 {"$addToSet": {"downloads": download["_id"]}}
                 )
 
+def get_content_from_taxonomy(taxonomy):
+
+        if taxonomy == "tags":
+            conn = db.tags
+        elif taxonomy == "subjects":
+            conn = db.subjects
+
+        content_ids = conn.find_one({ "slug": tag }, { "posts": 1, "links": 1, "downloads": 1, "_id": 0 })
+
+        tag_content = []
+
+        if content_ids["posts"]:
+            posts = []
+            for post in content_ids["posts"]:
+                content = db.content.find_one({ "_id": post })
+                intro = content["text"][:120]
+                if content["intro"]:
+                    intro = content["intro"]
+                info = {
+                    "title": content["title"],
+                    "slug": content["slug"],
+                    "item_id": content["item_id"],
+                    "date": content["date"],
+                    "intro": intro,
+                    "image": content["image"]
+                }
+                posts.append(info)
+            tag_content.append(posts)
+
+        if content_ids["links"]:
+            links = []
+            for link in content_ids["links"]:
+                content = db.content.find_one({ "_id": link })
+                info = {
+                    "title": content["title"],
+                    "slug": content["slug"],
+                    "item_id": content["item_id"],
+                    "date": content["date"],
+                    "url": content["text"],
+                }
+                links.append(info)
+            tag_content.append(links)
+        
+        if content_ids["downloads"]:
+            downloads = []
+            for download in content_ids["downloads"]:
+                content = db.content.find_one({ "_id": download })
+                intro = content["text"][:120]
+                if content["intro"]:
+                    intro = content["intro"]
+                info = {
+                    "title": content["title"],
+                    "slug": content["slug"],
+                    "item_id": content["item_id"],
+                    "date": content["date"],
+                    "intro": intro,
+                }
+                downloads.append(info)
+            tag_content.append(downloads)
+
+        return tag_content
