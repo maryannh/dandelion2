@@ -21,25 +21,19 @@ h1 img {
   max-height: auto;
 }
 
-h1 a:link, h3 a:link {
-        color: #434C5E;
-        text-decoration: none;
+a:link, h1 a:link, h3 a:link {
+        color: #434c5e;
     }
 
-h1 a:hover, h1 a:visited {
-  text-decoration: none;
+a:hover, h1 a:hover, h1 a:visited {
         color: #434C5E;
 }
 
 h3 a:hover, h3 a:visited {
-        text-decoration: none;
         color: #5E81AC;
     }
 
 /* post template */
-body.post h2 {
-
-}
 
 img.hero {
   display: block;
