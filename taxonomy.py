@@ -85,7 +85,7 @@ def get_content_from_taxonomy(taxonomy, term):
             for post in content_ids["posts"]:
                 content = db.content.find_one({ "_id": post })
                 intro = content["text"][:120]
-                if content["intro"]:
+                if intro in content:
                     intro = content["intro"]
                 info = {
                     "title": content["title"],
