@@ -21,25 +21,38 @@ h1 img {
   max-height: auto;
 }
 
+a:link {
+  color: #434c5e;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #434c5e;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #5E81AC;
+  font-weight: bold;
+}
+
 h1 a:link, h3 a:link {
-        color: #434C5E;
+        color: #434c5e;
         text-decoration: none;
     }
 
 h1 a:hover, h1 a:visited {
-  text-decoration: none;
         color: #434C5E;
+        text-decoration: none;
 }
 
 h3 a:hover, h3 a:visited {
-        text-decoration: none;
         color: #5E81AC;
+        text-decoration: none;
     }
 
 /* post template */
-body.post h2 {
-
-}
 
 img.hero {
   display: block;

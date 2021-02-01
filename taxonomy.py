@@ -4,6 +4,31 @@ from bson.objectid import ObjectId
 import config
 import os
 
+def get_tax_info(slug, tax_type):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+    if tax_type == "tag":
+        tax = db.tag.find_one({
+          "slug": slug,
+        })
+    elif tax_type == "subject":
+        tax = db.subject.find_one({
+          "slug": slug,
+        })
+    name = tax.get("name", "No name")
+    description = tax.get("description", "No description")
+    image = tax.get("image", "No image")
+    credits = tax.get("credits")
+    image_creator = credits.get("name", "No creator name")
+    image_creator_url = credits.get("url", "No creator URL")
+    info = {
+      "name": name,
+      "description": description,
+      "image": image,
+      "image_creator": image_creator,
+      "image_creator_url": image_creator_url,
+    }
+    return info
+
 def add_existing_to_tax():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     posts = list(db.content.find({"type": "post"}))
@@ -43,3 +68,65 @@ def add_existing_to_tax():
                 {"$addToSet": {"downloads": download["_id"]}}
                 )
 
+def get_content_from_taxonomy(taxonomy, term):
+        db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+
+        if taxonomy == "tags":
+            conn = db.tags
+        elif taxonomy == "subjects":
+            conn = db.subjects
+
+        content_ids = conn.find_one({ "slug": term }, { "posts": 1, "links": 1, "downloads": 1, "_id": 0 })
+
+        term_content = []
+
+        if "posts" in content_ids:
+            posts = []
+            for post in content_ids["posts"]:
+                content = db.content.find_one({ "_id": post })
+                intro = content["text"][:120]
+                if "intro" in content:
+                    intro = content["intro"]
+                info = {
+                    "title": content["title"],
+                    "slug": content["slug"],
+                    "item_id": content["item_id"],
+                    "date": content["date"],
+                    "intro": intro,
+                    "image": content["image"]
+                }
+                posts.append(info)
+            term_content.append(posts)
+
+        if "links" in content_ids:
+            links = []
+            for link in content_ids["links"]:
+                content = db.content.find_one({ "_id": link })
+                info = {
+                    "title": content["title"],
+                    "slug": content["slug"],
+                    "item_id": content["item_id"],
+                    "date": content["date"],
+                    "url": content["text"],
+                }
+                links.append(info)
+            term_content.append(links)
+        
+        if "downloads" in content_ids:
+            downloads = []
+            for download in content_ids["downloads"]:
+                content = db.content.find_one({ "_id": download })
+                intro = content["text"][:120]
+                if content["intro"]:
+                    intro = content["intro"]
+                info = {
+                    "title": content["title"],
+                    "slug": content["slug"],
+                    "item_id": content["item_id"],
+                    "date": content["date"],
+                    "intro": intro,
+                }
+                downloads.append(info)
+            term_content.append(downloads)
+
+        return term_content

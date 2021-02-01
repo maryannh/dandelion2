@@ -14,9 +14,9 @@ import pymongo
 from slugify import slugify 
 
 import config
+from taxonomy import add_existing_to_tax, get_tax_info, get_content_from_taxonomy
+from forms import PostForm, TaxForm
 from functions import add_to_db, create_item_id, get_content, add_to_tags, add_to_subjects, add_subject, add_tag
-from taxonomy import add_existing_to_tax
-from forms import PostForm
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py', silent=True)
@@ -146,15 +146,6 @@ def index():
     return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
         download_loop=download_loop, link_loop=link_loop)
 
-@app.route("/add")
-@basic_auth.required
-def add():
-    start = time.time()
-    add_existing_to_tax()
-    end = time.time()
-    time_taken = end - start
-    return render_template("cron.html", time_taken=time_taken)
-
 @app.route("/admin")
 @basic_auth.required
 def admin():
@@ -219,6 +210,37 @@ def delete_post(item_id):
     # flashed message
     flash('Post deleted successfully')
     return redirect("/admin")
+
+@app.route("/edit/tag/<slug>", methods=('GET', 'POST'))
+@basic_auth.required
+def edit_tag(slug):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+    # get existing tag details
+    content = get_tax_info(slug, "tag")
+    form = PostForm(data=content)
+    if form.validate_on_submit():
+        name = form.name.data
+        description = form.description.data
+        image = form.image.data
+        image_creator = form.image_creator.data
+        image_creator_url = form.image_creator_url.data
+        info = {
+            "updated": {
+                "via": "flask",
+                "date": datetime.now(),
+              },
+            "name": name,
+            "description": description,
+            "image": image,
+            "credits": {
+                "name": form.image_creator.data,
+                "url": form.image_creator_url.data,
+                }
+              }
+        db.tags.update_one({"slug": slug}, {"$set": info})
+        flash('Tag edited successfully')
+        return render_template("edit_tax.html", form=form)
+    return render_template("edit_tax.html", form=form)
 
 @app.route("/edit/post/<item_id>", methods=('GET', 'POST'))
 @basic_auth.required
@@ -293,71 +315,23 @@ def cron():
 def tag(tag):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
 
-    posts_query = db.content.find({
-        "type": "post",
-        "tags": {"$in": [tag] }
-    }).sort("date", -1)
-    posts = None
-    if posts_query != None:
-        posts = list(posts_query)
+    # get tag into including header image
+    info = db.tags.find_one({ "slug": tag })
 
-    links_query = db.content.find({
-        "type": "link",
-        "tags": {"$in": [tag] }
-    }).sort("date", -1)
-    links = None
-    if links_query != None:
-        links = list(links_query)
+    content = get_content_from_taxonomy("tags", tag)
 
-    downloads_query = db.content.find({
-        "type": "download",
-        "tags": {"$in": [tag] }
-    }).sort("date", -1)
-    downloads = None
-    if downloads_query != None:
-        downloads = list(downloads_query)
-
-    info = db.tags.find_one({
-        "slug": tag,
-    })
-
-    return render_template("tag.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
+    return render_template("tag.html", content=content, info=info)
 
 @app.route("/subject/<subject>")
 def subject(subject):
 
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
 
-    posts_query = db.content.find({
-        "type": "post",
-        "subjects": {"$in": [subject] }
-    }).sort("date", -1)
-    posts = None
-    if posts_query != None:
-        posts = list(posts_query)
-    # if there's no posts, this needs to return none
+    info = db.subjects.find_one({ "slug": tag })
 
-    links_query = db.content.find({
-        "type": "link",
-        "subjects": {"$in": [subject] }
-    }).sort("date", -1)
-    links = None
-    if links_query != None:
-        links = list(links_query)
+    content = get_content_from_taxonomy("subjects", subject)
 
-    downloads_query = db.content.find({
-        "type": "download",
-        "subjects": {"$in": [subject] }
-    }).sort("date", -1)
-    downloads = None
-    if downloads_query != None:
-        downloads = list(downloads_query)
-
-    info = db.subjects.find_one({
-        "slug": subject,
-    })
-
-    return render_template("subject.html", links=links, posts=posts, tag=tag, downloads=downloads, info=info)
+    return render_template("subject.html", content=content, info=info)
 
 @app.route("/post/<post_id>")
 def post(post_id):
@@ -382,5 +356,5 @@ def download(page_id):
     text = markdown(info["text"])
     return render_template("download.html", info=info, text=text)
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+# if __name__ == '__main__':
+    # app.run(debug=True, host='0.0.0.0')
