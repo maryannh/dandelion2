@@ -80,7 +80,7 @@ def get_content_from_taxonomy(taxonomy, term):
 
         term_content = []
 
-        if content_ids["posts"]:
+        if posts in content_ids:
             posts = []
             for post in content_ids["posts"]:
                 content = db.content.find_one({ "_id": post })
@@ -98,7 +98,7 @@ def get_content_from_taxonomy(taxonomy, term):
                 posts.append(info)
             term_content.append(posts)
 
-        if content_ids["links"]:
+        if links in content_ids:
             links = []
             for link in content_ids["links"]:
                 content = db.content.find_one({ "_id": link })
@@ -112,7 +112,7 @@ def get_content_from_taxonomy(taxonomy, term):
                 links.append(info)
             term_content.append(links)
         
-        if content_ids["downloads"]:
+        if downloads in content_ids:
             downloads = []
             for download in content_ids["downloads"]:
                 content = db.content.find_one({ "_id": download })
