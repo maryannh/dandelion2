@@ -69,6 +69,7 @@ def add_existing_to_tax():
                 )
 
 def get_content_from_taxonomy(taxonomy):
+        db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
 
         if taxonomy == "tags":
             conn = db.tags
