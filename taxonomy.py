@@ -96,7 +96,7 @@ def get_content_from_taxonomy(taxonomy, term):
                     "image": content["image"]
                 }
                 posts.append(info)
-            tag_content.append(posts)
+            term_content.append(posts)
 
         if content_ids["links"]:
             links = []
@@ -110,7 +110,7 @@ def get_content_from_taxonomy(taxonomy, term):
                     "url": content["text"],
                 }
                 links.append(info)
-            tag_content.append(links)
+            term_content.append(links)
         
         if content_ids["downloads"]:
             downloads = []
