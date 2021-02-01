@@ -31,36 +31,14 @@
     {{ info["description"] }}
   {% endif %}
 </p>
+    
+             <ul class="list-unstyled">
+             {% for item in content %}
+                 <li>{{ item["title"] }}</li>
+             {% endfor %}
+             </ul>
+             
 
-{% if posts %}
-<h2>Posts</h2>
-{% for post in posts %}
- <div class="post row mb-4">
-              <div class="col-sm image">
-
-                <img src="{{ post["image"] }}" class="img-fluid rounded border mb-3" alt="{{ post["title"] }}">
-              </div>
-              <div class="col-sm text">
-                <h3><a href="{{ config.BASE_URL }}/post/{{ post["item_id"] }}">{{ post["title"] }}</a></h3>
-                <p class="meta text-monospace small">{{ post["date"].strftime("%-d %B %Y") }}</p>
-              </div>
-          </div>
-{% endfor %}
-{% endif %}
-
-
-
-{% if links %}
-<h2>Links</h2>
-
-<ul class="list-unstyled mb-4">
-{% for link in links %}
-            <li><a href="{{ link["text"] }}">{{ link["title"] }}</a> <small>({{ link["text"].rpartition("//")[-1].partition("/")[0] }})</small>
-            <p class="meta text-monospace small">{{ link["date"].strftime("%-d %B %Y") }}</p>
-            </li>
-{% endfor %}
-          </ul>
-{% endif %}
 
 
 

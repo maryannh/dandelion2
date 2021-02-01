@@ -319,8 +319,8 @@ def tag(tag):
     info = db.tags.find_one({ "slug": tag })
 
     content = get_content_from_taxonomy("tags", tag)
-
-    return render_template("tag.html", content=content, info=info)
+    
+    return render_template("tag.html", info=info, content=content)
 
 @app.route("/subject/<subject>")
 def subject(subject):
@@ -356,5 +356,5 @@ def download(page_id):
     text = markdown(info["text"])
     return render_template("download.html", info=info, text=text)
 
-# if __name__ == '__main__':
-    # app.run(debug=True, host='0.0.0.0')
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')

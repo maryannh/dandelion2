@@ -77,56 +77,40 @@ def get_content_from_taxonomy(taxonomy, term):
             conn = db.subjects
 
         content_ids = conn.find_one({ "slug": term }, { "posts": 1, "links": 1, "downloads": 1, "_id": 0 })
-
-        term_content = []
-
-        if "posts" in content_ids:
-            posts = []
-            for post in content_ids["posts"]:
-                content = db.content.find_one({ "_id": post })
-                intro = content["text"][:120]
-                if "intro" in content:
-                    intro = content["intro"]
-                info = {
-                    "title": content["title"],
-                    "slug": content["slug"],
-                    "item_id": content["item_id"],
-                    "date": content["date"],
-                    "intro": intro,
-                    "image": content["image"]
-                }
-                posts.append(info)
-            term_content.append(posts)
-
-        if "links" in content_ids:
-            links = []
-            for link in content_ids["links"]:
-                content = db.content.find_one({ "_id": link })
-                info = {
-                    "title": content["title"],
-                    "slug": content["slug"],
-                    "item_id": content["item_id"],
-                    "date": content["date"],
-                    "url": content["text"],
-                }
-                links.append(info)
-            term_content.append(links)
         
-        if "downloads" in content_ids:
-            downloads = []
-            for download in content_ids["downloads"]:
-                content = db.content.find_one({ "_id": download })
-                intro = content["text"][:120]
-                if content["intro"]:
-                    intro = content["intro"]
+        posts = []
+        if content_ids.get("posts") != None:
+            posts = content_ids.get("posts")
+        
+        links = []
+        if content_ids.get("links") != None:
+            links = content_ids.get("links")
+        
+        downloads = []
+        if content_ids.get("downloads") != None:
+            downloads = content_ids.get("downloads")
+        
+        ids = posts + links + downloads
+        
+        if len(ids) > 1:
+            content = []
+            for item in ids:
+                content_info = db.content.find_one({ "_id": item })
+                intro = content_info["text"]
+                if content_info.get("intro") == None:
+                    intro = content_info.get("intro")
                 info = {
-                    "title": content["title"],
-                    "slug": content["slug"],
-                    "item_id": content["item_id"],
-                    "date": content["date"],
+                    "title": content_info.get("title", "NA"),
+                    "slug": content_info.get("slug", "NA"),
                     "intro": intro,
+                    "text": content_info.get("text", "NA"),
+                    "image": content_info.get("image", "NA"),
+                    "author": content_info.get("author", "NA"),
+                    "type": content_info.get("type", "NA"),
+                    "date": content_info.get("date", "NA"),
                 }
-                downloads.append(info)
-            term_content.append(downloads)
-
-        return term_content
+                content.append(info)
+        else:
+            content = ["Sorry, no content available"]
+            
+        return content
