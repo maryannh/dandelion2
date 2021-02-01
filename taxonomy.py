@@ -68,7 +68,7 @@ def add_existing_to_tax():
                 {"$addToSet": {"downloads": download["_id"]}}
                 )
 
-def get_content_from_taxonomy(taxonomy):
+def get_content_from_taxonomy(taxonomy, term):
         db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
 
         if taxonomy == "tags":
@@ -76,9 +76,9 @@ def get_content_from_taxonomy(taxonomy):
         elif taxonomy == "subjects":
             conn = db.subjects
 
-        content_ids = conn.find_one({ "slug": tag }, { "posts": 1, "links": 1, "downloads": 1, "_id": 0 })
+        content_ids = conn.find_one({ "slug": term }, { "posts": 1, "links": 1, "downloads": 1, "_id": 0 })
 
-        tag_content = []
+        term_content = []
 
         if content_ids["posts"]:
             posts = []
@@ -127,6 +127,6 @@ def get_content_from_taxonomy(taxonomy):
                     "intro": intro,
                 }
                 downloads.append(info)
-            tag_content.append(downloads)
+            term_content.append(downloads)
 
-        return tag_content
+        return term_content

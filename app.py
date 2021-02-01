@@ -318,7 +318,7 @@ def tag(tag):
     # get tag into including header image
     info = db.tags.find_one({ "slug": tag })
 
-    content = get_content_from_taxonomy("tags")
+    content = get_content_from_taxonomy("tags", tag)
 
     return render_template("tag.html", content=content, info=info)
 
@@ -329,7 +329,7 @@ def subject(subject):
 
     info = db.subjects.find_one({ "slug": tag })
 
-    content = get_content_from_taxonomy("subjects")
+    content = get_content_from_taxonomy("subjects", subject)
 
     return render_template("subject.html", content=content, info=info)
 
