@@ -280,7 +280,7 @@ def about():
 @app.route("/cron")
 def cron():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
-    end = time.time()
+    start = time.time()
     add_to_db("post")
     add_to_db("link")
     add_to_db("download")
