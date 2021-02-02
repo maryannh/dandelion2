@@ -1,15 +1,15 @@
 {% extends 'base2.html' %}
-{% set active_page = "{{ info["slug"] }}" %}
+{% set active_page = info["slug"] %}
 
 {% block main_title %}
-  { info["name"] }} -
+  {{ info["name"] }} -
 {% endblock %}
 
 {% block ogtags %}
 <meta property="og:title" content="{{ info["name"] }} - Dandelion">
 <meta property="og:description" content="Posts about {{ info["name"] }}">
 <meta property="og:image" content="https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611071200/kathy-morales-ebbGG4a9go0-unsplash.jpg">
-<meta property="og:url" content="{{ config.BASE_URL }}/subject/{{ info["slug"] }}">
+<meta property="og:url" content="{{ config.BASE_URL }}/tag/{{ info["slug"] }}">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="og:type" content="website"> <!-- less than 1mb -->
 {% endblock %}
@@ -31,37 +31,51 @@
     {{ info["description"] }}
   {% endif %}
 </p>
-
-{% if posts %}
-<h2>Posts</h2>
-
-{% for post in posts %}
- <div class="post row mb-4">
+    
+             <ul class="list-unstyled loop">
+             {% for item in content|sort(attribute='date', reverse=True) %}
+             {% if item["type"] == "post" %}
+                 <li class="post">
+                   <div class="post row mb-4">
               <div class="col-sm image">
-
-                <img src="{{ post["image"] }}" class="img-fluid rounded border mb-3" alt="{{ post["title"] }}">
+                <img src="{{ item["image"] }}" class="img-fluid mb-3" alt="{{ item["title"] }}" >
               </div>
               <div class="col-sm text">
-                <h3><a href="{{ config.BASE_URL }}/post/{{ post["item_id"] }}">{{ post["title"] }}</a></h3>
-                <p class="meta text-monospace small">{{ post["date"].strftime("%-d %B %Y") }}</p>
-              </div>
+                <h3 class="mt-3"><a href="{{ config.BASE_URL }}/post/{{ item["item_id"] }}">{{ item["title"] }}</a></h3>
+                <p class="meta text-monospace small mt-0">{{ item["date"].strftime("%-d %B %Y") }}</p>
+
+            
+                     </div>
           </div>
-{% endfor %}
-{% endif %}
 
 
 
-{% if links %}
-<h2>Links</h2>
+                </li>
+              {% endif %}
+              {% if item["type"] == "link" %}
+                 <li class="link"> <span class="badge badge-secondary">{{ item["type"]|capitalize }}</span> 
+                   <a href="{{ item["text"] }}">
+                   {{ item["title"] }}
+                   
+                   <small>({{ item["text"].rpartition("//")[-1].partition("/")[0] }})</small></a>
+                <p class="meta text-monospace small">{{ item["date"].strftime("%-d %B %Y") }}</p>
+                </li>
+              {% endif %}
+              {% if item["type"] == "download" %}
 
-<ul class="list-unstyled mb-4">
-{% for link in links %}
-            <li><a href="{{ link["text"] }}">{{ link["title"] }}</a> <small>({{ link["text"].rpartition("//")[-1].partition("/")[0] }})</small>
-            <p class="meta text-monospace small">{{ link["date"].strftime("%-d %B %Y") }}</p>
-            </li>
-{% endfor %}
-          </ul>
-{% endif %}
+
+                 <li class="download">
+                   <span class="badge badge-secondary">{{ item["type"]|capitalize }}</span> <a href="{{ config.BASE_URL }}/download/{{ item["slug"] }}">
+                   {{ item["title"] }}
+                   </a>
+                </li>
+
+
+              {% endif %}
+             {% endfor %}
+             </ul>
+             
+
 
 
 

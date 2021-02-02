@@ -69,6 +69,11 @@ div.post-text p:first-child, div.tag-text p:first-child, div.page-text p:first-c
 
 /* tag template */
 
+li.post {
+    border-top: 3px #D8DEE9 solid;
+}
+
+
 body.tag p.description {
   font-size: 1.25rem;
 }
