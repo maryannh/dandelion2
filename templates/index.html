@@ -21,9 +21,7 @@
 {% block content %}
         <!-- body content -->
 
-      <div class="row">
-        <div class="col-sm post mx-3">
-         <div class="tag-text mx-auto">
+      
 
     
              <ul class="list-unstyled loop">
@@ -32,7 +30,9 @@
                  <li class="post mt-3">
                    <div class="post row mb-4">
               <div class="col-sm image">
+                  <a href="{{ config.BASE_URL }}post/{{ item["item_id"] }}">
                 <img src="{{ item["image"] }}" class="img-fluid mb-3" alt="{{ item["title"] }}" >
+                  </a>
               </div>
               <div class="col-sm text">
                 <h3 class="mt-3"><a href="{{ config.BASE_URL }}/post/{{ item["item_id"] }}">{{ item["title"] }}</a></h3>

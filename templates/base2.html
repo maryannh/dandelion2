@@ -27,13 +27,43 @@
 
       <header class="row">
         <div class="col-sm">
+            <ul class="list-inline text-center mt-3">
+                <li class="list-inline-item mr-4">
+                    <a href="{{ config.BASE_URL }}">
+                    Home
+                    </a>
+                </li>
+                <li class="list-inline-item mr-4">
+                    <a href="{{ config.BASE_URL }}about">
+                    About
+                    </a>
+                </li>
+                <li class="list-inline-item mr-4">
+                    <a href="{{ config.BASE_URL }}subjects">
+                    Subjects
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="{{ config.BASE_URL }}tags">
+                    Tags
+                    </a>
+                </li>
+            </ul>
           <h1 class="text-center my-4">
-            <a href="https://dandelionhe.com">
-              <img src="{{ url_for('static', filename='images/icon.png') }}" class="mb-2">
+            <a href="{{ config.BASE_URL }}">
+              <img src="{{ url_for('static', filename='images/icon.png') }}" class="mb-1">
             Dandelion
             </a>
           </h1>
-          
+       <div class="row">
+        <div class="col-sm post mx-3">
+         <div class="tag-text mx-auto">
+          <p class="lead text-center mb-4">
+  Home education news, posts, links and resources from the UK and beyond, by Mary-Ann (mum) and Cian (age 7)
+</p>
+            </div>
+           </div>
+            </div>
         </div>
       </header>
         <!-- body content -->
@@ -48,13 +78,18 @@
     
   {% endif %}
 {% endwith %}
+        
+        <div class="row">
+        <div class="col-sm post mx-3">
+         <div class="tag-text mx-auto">
+             
 {% block content %}{% endblock %}
         <!-- /end body content -->
 
       <footer class="row">
         <div class="col-sm">
           <hr>
-          <p><small>&copy; 2020 Curva Tech Ltd</small></p>
+          <p class="text-center"><small>&copy; 2020 Curva Tech Ltd</small></p>
         </div>
       </footer>
 
