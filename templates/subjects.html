@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block body_class %}
-  <body class="subjects page"> 
+  <body class="subjects"> 
 {% endblock %}
 
 {% block content %}
@@ -29,7 +29,7 @@
           <ul class="list-inline">
              {% for subject in subjects|sort(attribute='count', reverse=True) %}
                 <li class="list-inline-item">
-                  <a href="{{ config.BASE_URL }}/subject/{{ subject["slug"] }}" class="btn btn-light mt-3">
+                  <a href="/subject/{{ subject["slug"] }}" class="btn btn-light mt-3">
                   {{ subject["name"] }} 
                   <span class="badge badge-dark">
                     {{ subject["count"] }}

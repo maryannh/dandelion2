@@ -29,6 +29,7 @@ def get_tax_info(slug, tax_type):
     }
     return info
 
+
 def add_existing_to_tax():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     posts = list(db.content.find({"type": "post"}))
@@ -68,6 +69,7 @@ def add_existing_to_tax():
                 {"$addToSet": {"downloads": download["_id"]}}
                 )
 
+            
 def get_content_from_taxonomy(taxonomy, term):
         db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
 
@@ -92,9 +94,11 @@ def get_content_from_taxonomy(taxonomy, term):
         
         ids = posts + links + downloads
         
+        ids.sort(reverse=True)
+        
         if len(ids) > 1:
             content = []
-            for item in ids:
+            for item in ids[:30]:
                 content_info = db.content.find_one({ "_id": item })
                 intro = content_info["text"]
                 if content_info.get("intro") == None:

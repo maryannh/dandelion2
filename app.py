@@ -40,6 +40,7 @@ def get_item_tags(item_id):
       tags.append(info)
       return tags
 
+    
 def get_item_subjects(item_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     raw_subjects = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
@@ -53,6 +54,7 @@ def get_item_subjects(item_id):
       subjects.append(info)
       return subjects
 
+    
 def get_subjects():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     subject_list = list(db.subjects.find())
@@ -60,7 +62,7 @@ def get_subjects():
     for subject in subject_list:
         slug = subject["slug"]
         name = subject["name"]
-        count = db.content.count({
+        count = db.content.count_documents({
         "subjects": slug
             })
         if int(count) > 2:
@@ -72,6 +74,7 @@ def get_subjects():
         subjects.append(info)
     return subjects
 
+
 def get_tags():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
 
@@ -82,36 +85,28 @@ def get_tags():
 
     tags = []
     
-    start = time.time()
     for tag in tag_list:
         slug = tag["slug"]
         name = tag["name"]
         
-        count = db.content.count({
+        count = db.content.count_documents({
           "tags": slug
           })
         if int(count) > 2:
-          info = {
-            "slug": slug,
-            "name": name,
-            "count": count,
-          }
-          tags.append(info)
-    end = time.time()
-    tag_count_time = end - start
-
-    info = {
-      "function": "get_tags",
-      "list_time": tag_list_time,
-      "count_time": tag_count_time,
-    }
-    db.log.insert_one(info)
+            info = {
+                "slug": slug,
+                "name": name,
+                "count": count,
+                }
+            tags.append(info)
 
     return tags
+
 
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
 
 @app.route("/")
 def index():
@@ -120,6 +115,8 @@ def index():
     content = list(db.content.find({}).sort([("date", -1), ("_id", 1)]).limit(30))
     
     return render_template("index.html", content=content)
+
+
 
 @app.route("/admin")
 @basic_auth.required
@@ -130,6 +127,7 @@ def admin():
       "type": "post"
     }))
     return render_template("admin.html", posts=posts)
+
 
 @app.route("/add_post", methods=('GET', 'POST'))
 @basic_auth.required
@@ -177,6 +175,7 @@ def add_new_post():
         return render_template("add_post.html", form=form)
     return render_template("add_post.html", form=form)
 
+
 @app.route("/delete/post/<item_id>")
 @basic_auth.required
 def delete_post(item_id):
@@ -185,6 +184,7 @@ def delete_post(item_id):
     # flashed message
     flash('Post deleted successfully')
     return redirect("/admin")
+
 
 @app.route("/edit/tag/<slug>", methods=('GET', 'POST'))
 @basic_auth.required
@@ -216,6 +216,7 @@ def edit_tag(slug):
         flash('Tag edited successfully')
         return render_template("edit_tax.html", form=form)
     return render_template("edit_tax.html", form=form)
+
 
 @app.route("/edit/post/<item_id>", methods=('GET', 'POST'))
 @basic_auth.required
@@ -260,19 +261,23 @@ def edit_post(item_id):
         return render_template("edit_post.html", form=form)
     return render_template("edit_post.html", form=form, item_id=item_id)
 
+
 @app.route("/subjects")
 def subjects():
     subjects = get_subjects()
     return render_template("subjects.html", subjects=subjects)
+
 
 @app.route("/tags")
 def tags():
     tags = get_tags()
     return render_template("tags.html", tags=tags)
 
+
 @app.route("/about")
 def about():
     return render_template("about.html")
+
 
 @app.route("/cron")
 def cron():
@@ -286,6 +291,7 @@ def cron():
     time_taken = end - start
     return render_template("cron.html", time_taken=time_taken)
 
+
 @app.route("/tag/<tag>")
 def tag(tag):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
@@ -296,6 +302,7 @@ def tag(tag):
     content = get_content_from_taxonomy("tags", tag)
     
     return render_template("taxonomy.html", info=info, content=content)
+
 
 @app.route("/subject/<subject>")
 def subject(subject):
@@ -308,6 +315,7 @@ def subject(subject):
 
     return render_template("taxonomy.html", content=content, info=info)
 
+
 @app.route("/post/<post_id>")
 def post(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
@@ -317,6 +325,7 @@ def post(post_id):
     # subjects = get_item_subjects(post_id)
     return render_template("post.html", info=info, text=text, tags=tags, subjects=subjects)
 
+
 @app.route("/page/<page_id>")
 def page(page_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
@@ -324,12 +333,14 @@ def page(page_id):
     text = markdown(info["text"])
     return render_template("page.html", info=info, text=text)
 
+
 @app.route("/download/<page_id>")
 def download(page_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])
     return render_template("download.html", info=info, text=text)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

@@ -29,7 +29,7 @@
              <ul class="list-unstyled loop">
              {% for item in content|sort(attribute='date', reverse=True) %}
              {% if item["type"] == "post" %}
-                 <li class="post">
+                 <li class="post mt-3">
                    <div class="post row mb-4">
               <div class="col-sm image">
                 <img src="{{ item["image"] }}" class="img-fluid mb-3" alt="{{ item["title"] }}" >
