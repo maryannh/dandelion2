@@ -115,36 +115,11 @@ def page_not_found(e):
 
 @app.route("/")
 def index():
-    start = time.time()
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     
-    post_loop = list(db.content.find({
-        "type": "post"
-    }).sort([("date", -1), ("_id", 1)]).limit(10))
+    content = list(db.content.find({}).sort([("date", -1), ("_id", 1)]).limit(30))
     
-    page_loop = list(db.content.find({
-        "type": "page"
-    }))
-    
-    download_loop = list(db.content.find({
-        "type": "download"
-    }).sort([("date", -1), ("_id", 1)]).limit(10))
-    
-    link_loop = list(db.content.find({
-        "type": "link"
-    }).sort([("date", -1), ("_id", 1)]).limit(10))
-    end = time.time()
-    total_time = end - start
-
-    info = {
-      "function": "index overall",
-      "total": total_time,
-    }
-
-    db.log.insert_one(info)
-
-    return render_template("index.html", post_loop=post_loop, page_loop=page_loop,
-        download_loop=download_loop, link_loop=link_loop)
+    return render_template("index.html", content=content)
 
 @app.route("/admin")
 @basic_auth.required
