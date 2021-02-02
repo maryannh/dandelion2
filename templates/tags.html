@@ -29,7 +29,7 @@
           <ul class="list-inline">
              {% for tag in tags|sort(attribute='count', reverse=True) %}
                 <li class="list-inline-item">
-                  <a href="/tag/{{ tag["slug"] }}" class="btn btn-light mt-3">
+                  <a href="{{ config.BASE_URL }}tag/{{ tag["slug"] }}" class="btn btn-light mt-3">
                   {{ tag["name"] }} 
                   <span class="badge badge-dark">
                     {{ tag["count"] }}
