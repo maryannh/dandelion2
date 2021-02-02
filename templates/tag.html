@@ -32,9 +32,51 @@
   {% endif %}
 </p>
     
-             <ul class="list-unstyled">
+             <ul class="list-unstyled loop">
              {% for item in content %}
-                 <li>{{ item["title"] }}</li>
+             {% if item["type"] is "post" %}
+                 <li class="post">
+                   <div class="post row mb-4">
+              <div class="col-sm image">
+                <img src="{{ item["image"] }}" class="img-fluid mb-3" alt="{{ item["title"] }}" >
+              </div>
+              <div class="col-sm text">
+                <h3><span class="badge badge-secondary">{{ item["type"] }}</span> <a href="{{ config.BASE_URL }}/post/{{ item["item_id"] }}">{{ item["title"] }}</a></h3>
+                <p class="meta text-monospace small mt-0">{{ item["date"].strftime("%-d %B %Y") }}</p>
+
+
+            <p>
+              {{ item["intro"] }}
+
+              </p> 
+            
+                     </div>
+          </div>
+
+
+
+                </li>
+              {% endif %}
+              {% if item["type"] is "link" %}
+                 <li class="link"> <span class="badge badge-secondary">{{ item["type"] }}</span> 
+                   <a href="{{ item["text"] }}">
+                   {{ item["title"] }}
+                   
+                   <small>({{ item["text"].rpartition("//")[-1].partition("/")[0] }})</small></a>
+                <p class="meta text-monospace small">{{ item["date"].strftime("%-d %B %Y") }}</p>
+                </li>
+              {% endif %}
+              {% if item["type"] is "download" %}
+
+
+                 <li class="download">
+                   <span class="badge badge-secondary">{{ item["type"] }}</span> <a href="{{ config.BASE_URL }}/download/{{ item["slug"] }}">
+                   {{ item["title"] }}
+                   </a>
+                </li>
+
+
+              {% endif %}
              {% endfor %}
              </ul>
              
