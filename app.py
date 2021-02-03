@@ -54,54 +54,6 @@ def get_item_subjects(item_id):
       subjects.append(info)
       return subjects
 
-    
-def get_subjects():
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
-    subject_list = list(db.subjects.find())
-    subjects = []
-    for subject in subject_list:
-        slug = subject["slug"]
-        name = subject["name"]
-        count = db.content.count_documents({
-        "subjects": slug
-            })
-        if int(count) > 2:
-            info = {
-              "slug": slug,
-              "name": name,
-              "count": count,
-            }
-        subjects.append(info)
-    return subjects
-
-
-def get_tags():
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
-
-    start = time.time()
-    tag_list = list(db.tags.find())
-    end = time.time()
-    tag_list_time = end - start
-
-    tags = []
-    
-    for tag in tag_list:
-        slug = tag["slug"]
-        name = tag["name"]
-        
-        count = db.content.count_documents({
-          "tags": slug
-          })
-        if int(count) > 2:
-            info = {
-                "slug": slug,
-                "name": name,
-                "count": count,
-                }
-            tags.append(info)
-
-    return tags
-
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -264,6 +216,7 @@ def edit_post(item_id):
 
 @app.route("/subjects")
 def subjects():
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     subjects = list(db.subjects.get({ 
       "posts": {"$exists": True }, 
       "links": {"$exists": True } 
@@ -273,6 +226,7 @@ def subjects():
 
 @app.route("/tags")
 def tags():
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     tags = list(db.tags.get({ 
       "posts": {"$exists": True }, 
       "links": {"$exists": True } 
