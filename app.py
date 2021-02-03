@@ -217,7 +217,7 @@ def edit_post(item_id):
 @app.route("/subjects")
 def subjects():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
-    subjects = list(db.subjects.get({ 
+    subjects = list(db.subjects.find({ 
       "posts": {"$exists": True }, 
       "links": {"$exists": True } 
       }))
@@ -227,7 +227,7 @@ def subjects():
 @app.route("/tags")
 def tags():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
-    tags = list(db.tags.get({ 
+    tags = list(db.tags.find({ 
       "posts": {"$exists": True }, 
       "links": {"$exists": True } 
       }))
