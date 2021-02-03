@@ -264,13 +264,19 @@ def edit_post(item_id):
 
 @app.route("/subjects")
 def subjects():
-    subjects = get_subjects()
+    subjects = list(db.subjects.get({ 
+      "posts": {"$exists": True }, 
+      "links": {"$exists": True } 
+      }))
     return render_template("subjects.html", subjects=subjects)
 
 
 @app.route("/tags")
 def tags():
-    tags = get_tags()
+    tags = list(db.tags.get({ 
+      "posts": {"$exists": True }, 
+      "links": {"$exists": True } 
+      }))
     return render_template("tags.html", tags=tags)
 
 
