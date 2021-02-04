@@ -26,13 +26,14 @@
           <h2 class="text-center display-3">{{ info["name"] }}</h2>
 
          <div class="tag-text mx-auto">
-<p>
+<p class="lead">
   {% if info["description"] != "blank" %}
     {{ info["description"] }}
   {% endif %}
 </p>
     
              <ul class="list-unstyled loop">
+                 
              {% for item in content|sort(attribute='date', reverse=True) %}
              {% if item["type"] == "post" %}
                  <li class="post mt-3">

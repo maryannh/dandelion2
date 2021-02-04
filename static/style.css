@@ -62,7 +62,7 @@ div.post-text {
   font-size: 1.25rem;
 }
 
-div.post-text p:first-child, div.tag-text p:first-child, div.page-text p:first-child, div.subject-text p:first-child, div.tags-text p:first-child, div.subjects-text p:first-child {
+div.post-text p:first-child, div.page-text p:first-child {
   font-weight: bold;
   font-size: 1.5rem;
 }

@@ -79,10 +79,12 @@ def admin():
       "type": "post"
     }))
     tags = list(db.tags.find({
-      "posts": {"$exists": True }, 
+        "posts": {"$exists": True },
+        "links": {"$exists": True },
     }))
     subjects = list(db.subjects.find({
-      "posts": {"$exists": True }, 
+        "posts": {"$exists": True },
+        "links": {"$exists": True }, 
     }))
     return render_template("admin.html", posts=posts, tags=tags, subjects=subjects)
 
@@ -149,7 +151,9 @@ def delete_post(item_id):
 def edit_tag(slug):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     # get existing tag details
-    content = get_tax_info(slug, "tag")
+    content = db.tags.find_one({
+        "slug": slug,
+    })
     form = TaxForm(data=content)
     if form.validate_on_submit():
         name = form.name.data
@@ -180,7 +184,9 @@ def edit_tag(slug):
 def edit_subject(slug):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     # get existing values
-    content = get_tax_info(slug, "subject")
+    content = db.subjects.find_one({
+        "slug": slug,
+    })
     # get form
     form = TaxForm(data=content)
     # process form data
