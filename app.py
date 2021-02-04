@@ -32,12 +32,12 @@ def get_item_tags(item_id):
     raw_tags = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
     tags = []
     for tag in raw_tags:
-      tag_info = db.tags.find_one({"name": tag})
-      info = {
+        tag_info = db.tags.find_one({"name": tag})
+        info = {
         "name": tag,
         "slug": tag_info["slug"]
-      }
-      tags.append(info)
+        }
+        tags.append(info)
       return tags
 
     
@@ -46,13 +46,13 @@ def get_item_subjects(item_id):
     raw_subjects = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
     subjects = []
     for subject in raw_subjects:
-      subject_info = db.tags.find_one({"name": subject})
-      info = {
+        subject_info = db.tags.find_one({"name": subject})
+        info = {
         "name": subject,
         "slug": subject_info["slug"]
-      }
-      subjects.append(info)
-      return subjects
+        }
+        subjects.append(info)
+    return subjects
 
 
 @app.errorhandler(404)
@@ -150,7 +150,7 @@ def edit_tag(slug):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     # get existing tag details
     content = get_tax_info(slug, "tag")
-    form = PostForm(data=content)
+    form = TaxForm(data=content)
     if form.validate_on_submit():
         name = form.name.data
         description = form.description.data
@@ -172,43 +172,6 @@ def edit_tag(slug):
               }
         db.tags.update_one({"slug": slug}, {"$set": info})
         flash('Tag edited successfully')
-        return render_template("edit_tax.html", form=form)
-    return render_template("edit_tax.html", form=form)
-
-@app.route("/edit/tag/<slug>", methods=('GET', 'POST'))
-@basic_auth.required
-def edit_tag(slug):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
-    # get existing values
-    content = db.tags.find_one({"slug": slug})
-    # get form
-    form = TaxForm(data=content)
-    # process form data
-    if form.validate_on_submit():
-        name = form.name.data
-        slug = form.slug.data
-        description = form.description.data
-        image = form.image.data
-        image_creator = form.image_creator.data 
-        image_creator_url = form.image_creator_url.data
-        info = {
-          "updated": {
-            "via": "flask",
-            "date": datetime.now(),
-          },
-          "name": name,
-          "slug": slug,
-          "description": description,
-          "image": image,
-          "credits": {
-            "name": image_creator,
-            "url": image_creator_url,
-          }
-        }
-    # update db
-        db.tags.update_one({"slug": slug}, {"$set": info})
-    # flash message
-        flash('Tag edited successfully')
         return render_template("edit_tag.html", form=form)
     return render_template("edit_tag.html", form=form)
 
@@ -217,13 +180,12 @@ def edit_tag(slug):
 def edit_subject(slug):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     # get existing values
-    content = db.subjects.find_one({"slug": slug})
+    content = get_tax_info(slug, "subject")
     # get form
     form = TaxForm(data=content)
     # process form data
     if form.validate_on_submit():
         name = form.name.data
-        slug = form.slug.data
         description = form.description.data
         image = form.image.data
         image_creator = form.image_creator.data 
@@ -234,7 +196,6 @@ def edit_subject(slug):
             "date": datetime.now(),
           },
           "name": name,
-          "slug": slug,
           "description": description,
           "image": image,
           "credits": {
