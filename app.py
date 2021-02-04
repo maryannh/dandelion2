@@ -195,7 +195,7 @@ def edit_tag(slug):
           "updated": {
             "via": "flask",
             "date": datetime.now(),
-          }
+          },
           "name": name,
           "slug": slug,
           "description": description,
