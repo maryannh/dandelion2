@@ -8,7 +8,12 @@
 {% block ogtags %}
 <meta property="og:title" content="{{ info["name"] }} - Dandelion">
 <meta property="og:description" content="Posts about {{ info["name"] }}">
-<meta property="og:image" content="https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611071200/kathy-morales-ebbGG4a9go0-unsplash.jpg">
+<meta property="og:image" content="{% if info["image"] %}
+                                        {{ info["image"] }}
+                                    {% else %}
+                                   https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611071200/kathy-morales-ebbGG4a9go0-unsplash.jpg
+                                    {% endif %}
+                                   ">
 <meta property="og:url" content="{{ config.BASE_URL }}/tag/{{ info["slug"] }}">
 <meta name="twitter:card" content="summary_large_image">
 <meta property="og:type" content="website"> <!-- less than 1mb -->
