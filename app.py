@@ -38,7 +38,7 @@ def get_item_tags(item_id):
         "slug": tag_info["slug"]
         }
         tags.append(info)
-      return tags
+    return tags
 
     
 def get_item_subjects(item_id):
