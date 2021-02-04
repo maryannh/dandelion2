@@ -78,7 +78,13 @@ def admin():
     posts = list(db.content.find({
       "type": "post"
     }))
-    return render_template("admin.html", posts=posts)
+    tags = list(db.tags.find({
+      "posts": {"$exists": True }, 
+    }))
+    subjects = list(db.subjects.find({
+      "posts": {"$exists": True }, 
+    }))
+    return render_template("admin.html", posts=posts, tags=tags, subjects=subjects)
 
 
 @app.route("/add_post", methods=('GET', 'POST'))
@@ -168,6 +174,80 @@ def edit_tag(slug):
         flash('Tag edited successfully')
         return render_template("edit_tax.html", form=form)
     return render_template("edit_tax.html", form=form)
+
+@app.route("/edit/tag/<slug>", methods=('GET', 'POST'))
+@basic_auth.required
+def edit_tag(slug):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+    # get existing values
+    content = db.tags.find_one({"slug": slug})
+    # get form
+    form = TaxForm(data=content)
+    # process form data
+    if form.validate_on_submit():
+        name = form.name.data
+        slug = form.slug.data
+        description = form.description.data
+        image = form.image.data
+        image_creator = form.image_creator.data 
+        image_creator_url = form.image_creator_url.data
+        info = {
+          "updated": {
+            "via": "flask",
+            "date": datetime.now(),
+          }
+          "name": name,
+          "slug": slug,
+          "description": description,
+          "image": image,
+          "credits": {
+            "name": image_creator,
+            "url": image_creator_url,
+          }
+        }
+    # update db
+        db.tags.update_one({"slug": slug}, {"$set": info})
+    # flash message
+        flash('Tag edited successfully')
+        return render_template("edit_tag.html", form=form)
+    return render_template("edit_tag.html", form=form)
+
+@app.route("/edit/subject/<slug>", methods=('GET', 'POST'))
+@basic_auth.required
+def edit_subject(slug):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+    # get existing values
+    content = db.subjects.find_one({"slug": slug})
+    # get form
+    form = TaxForm(data=content)
+    # process form data
+    if form.validate_on_submit():
+        name = form.name.data
+        slug = form.slug.data
+        description = form.description.data
+        image = form.image.data
+        image_creator = form.image_creator.data 
+        image_creator_url = form.image_creator_url.data
+        info = {
+          "updated": {
+            "via": "flask",
+            "date": datetime.now(),
+          }
+          "name": name,
+          "slug": slug,
+          "description": description,
+          "image": image,
+          "credits": {
+            "name": image_creator,
+            "url": image_creator_url,
+          }
+        }
+    # update db
+        db.subjects.update_one({"slug": slug}, {"$set": info})
+    # flash message
+        flash('Subject edited successfully')
+        return render_template("edit_subject.html", form=form)
+    return render_template("edit_subject.html", form=form)
 
 
 @app.route("/edit/post/<item_id>", methods=('GET', 'POST'))
