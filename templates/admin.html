@@ -42,7 +42,7 @@
           {% for subject in subjects|sort(attribute="name") %}
             <li>
               <a href="{{ config.BASE_URL }}/edit/subject/{{ subject["slug"] }}">
-              {{ subject["title"] }}
+              {{ subject["name"] }}
             </a> 
             </li>
           {% endfor %}
@@ -55,7 +55,7 @@
           {% for tag in tags|sort(attribute="name") %}
             <li>
               <a href="{{ config.BASE_URL }}/edit/tag/{{ tag["slug"] }}">
-              {{ tag["title"] }}
+              {{ tag["name"] }}
             </a> 
             </li>
           {% endfor %}
