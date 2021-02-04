@@ -14,18 +14,12 @@ def get_tax_info(slug, tax_type):
         tax = db.subject.find_one({
           "slug": slug,
         })
-    name = tax.get("name", "No name")
-    description = tax.get("description", "No description")
-    image = tax.get("image", "No image")
-    credits = tax.get("credits")
-    image_creator = credits.get("name", "No creator name")
-    image_creator_url = credits.get("url", "No creator URL")
     info = {
-      "name": name,
-      "description": description,
-      "image": image,
-      "image_creator": image_creator,
-      "image_creator_url": image_creator_url,
+      "name": tax["name"],
+      "description": tax["description"],
+      "image": tax["image"],
+      "image_creator": tax["credits"]["name"],
+      "image_creator_url": tax["credits"]["url"],
     }
     return info
 
