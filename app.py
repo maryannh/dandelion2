@@ -232,7 +232,7 @@ def edit_subject(slug):
           "updated": {
             "via": "flask",
             "date": datetime.now(),
-          }
+          },
           "name": name,
           "slug": slug,
           "description": description,
