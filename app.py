@@ -14,7 +14,7 @@ import pymongo
 from slugify import slugify 
 
 import config
-from taxonomy import add_existing_to_tax, get_tax_info, get_content_from_taxonomy
+from taxonomy import add_existing_to_tax, get_tax_info, get_content_from_taxonomy, get_item_tags, get_item_subjects
 from forms import PostForm, TaxForm
 from functions import add_to_db, create_item_id, get_content, add_to_tags, add_to_subjects, add_subject, add_tag
 
@@ -27,32 +27,6 @@ bootstrap = Bootstrap(app)
 
 markdown = mistune.Markdown()
 
-def get_item_tags(item_id):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
-    raw_tags = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
-    tags = []
-    for tag in raw_tags:
-        tag_info = db.tags.find_one({"name": tag})
-        info = {
-        "name": tag,
-        "slug": tag_info["slug"]
-        }
-        tags.append(info)
-    return tags
-
-    
-def get_item_subjects(item_id):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
-    raw_subjects = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
-    subjects = []
-    for subject in raw_subjects:
-        subject_info = db.tags.find_one({"name": subject})
-        info = {
-        "name": subject,
-        "slug": subject_info["slug"]
-        }
-        subjects.append(info)
-    return subjects
 
 
 @app.errorhandler(404)

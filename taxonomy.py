@@ -114,3 +114,30 @@ def get_content_from_taxonomy(taxonomy, term):
             content = ["Sorry, no content available"]
             
         return content
+    
+def get_item_tags(item_id):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+    raw_tags = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
+    tags = []
+    for tag in raw_tags:
+        tag_info = db.tags.find_one({"name": tag})
+        info = {
+        "name": tag,
+        "slug": tag_info["slug"]
+        }
+        tags.append(info)
+    return tags
+
+    
+def get_item_subjects(item_id):
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+    raw_subjects = db.content.find_one({"item_id": item_id}, {"tags": 1, "_id": 0})
+    subjects = []
+    for subject in raw_subjects:
+        subject_info = db.tags.find_one({"name": subject})
+        info = {
+        "name": subject,
+        "slug": subject_info["slug"]
+        }
+        subjects.append(info)
+    return subjects
