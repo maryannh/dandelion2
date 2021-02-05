@@ -10,6 +10,7 @@ div.post-text, div.tag-text, div.page-text, div.subject-text, div.subjects-text,
 body {
         background: #ECEFF4;
         color: #3B4252;
+    font-family: 'Quicksand', sans-serif;
     }
 
 h1 {
