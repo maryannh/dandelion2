@@ -24,6 +24,22 @@
       <div class="row">
         <div class="col-sm post mx-3">
           <h2 class="text-center display-3">{{ info["title"] }}</h2>
+            <ul class="list-inline meta text-monospace small text-center">
+  <li class="list-inline-item">
+      <i class="bi-calendar"></i> {{ info["date"].strftime("%-d %B %Y") }}</li>
+  <li class="list-inline-item">
+      <i class="bi-tag"></i>
+      {% for tag in tags %}
+      <a href="{{ config.BASE_URL }}/tag/{{ tag["slug"] }}">{{ tag["name"] }}</a>{% if not loop.last %}, {% endif %}
+             {% endfor %}
+                </li>
+  <li class="list-inline-item">
+      <i class="bi-book"></i>
+      {% for subject in subjects %}
+                <a href="{{ config.BASE_URL }}/subject/{{ subject["slug"] }}">{{ subject["name"] }}</a>{% if not loop.last %}, {% endif %}
+             {% endfor %}
+                </li>
+</ul>
 
           <div class="tag-text mx-auto">
 

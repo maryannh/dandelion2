@@ -32,15 +32,37 @@ if needed -->
  <div class="row">
         <div class="col-sm post mx-3 clearfix">
           <h2 class="text-center display-4">{{ info["title"] }}</h2>
-          <p class="meta text-monospace small text-center">
-            <i class="bi-calendar"></i> {{ info["date"].strftime("%-d %B %Y") }}
-            </p>
+            <ul class="list-inline meta text-monospace small text-center">
+  <li class="list-inline-item">
+      <i class="bi-calendar"></i> {{ info["date"].strftime("%-d %B %Y") }}</li>
+  <li class="list-inline-item">
+      <i class="bi-tag"></i>
+      {% for tag in tags %}
+      <a href="{{ config.BASE_URL }}/tag/{{ tag["slug"] }}">{{ tag["name"] }}</a>{% if not loop.last %}, {% endif %}
+             {% endfor %}
+                </li>
+  <li class="list-inline-item">
+      <i class="bi-book"></i>
+      {% for subject in subjects %}
+                <a href="{{ config.BASE_URL }}/subject/{{ subject["slug"] }}">{{ subject["name"] }}</a>{% if not loop.last %}, {% endif %}
+             {% endfor %}
+                </li>
+</ul>
+          
+            
+              
+              
+             
+             
+          
          <img src="{{ info["image"] }}" class="img-fluid mb-3 hero mx-auto" alt="{{ info["title"] }}">
          <small class="text-center">
             Photo by <a href="{{ info["credits"]["url"] }}">{{ info["credits"]["name"] }}</a>
         </small>
 
          <div class="post-text mx-auto">
+             
+             
 {{ text|safe }}
            </div>
 

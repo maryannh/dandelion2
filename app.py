@@ -14,7 +14,7 @@ import pymongo
 from slugify import slugify 
 
 import config
-from taxonomy import add_existing_to_tax, get_tax_info, get_content_from_taxonomy, get_item_tags, get_item_subjects
+from taxonomy import add_existing_to_tax, get_tax_info, get_content_from_taxonomy
 from forms import PostForm, TaxForm
 from functions import add_to_db, create_item_id, get_content, add_to_tags, add_to_subjects, add_subject, add_tag
 
@@ -299,11 +299,23 @@ def subject(subject):
 
 @app.route("/post/<post_id>")
 def post(post_id):
-    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority", connect=False).blog
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     info = db.content.find_one({"item_id": post_id})
     text = markdown(info["text"])
-    # tags = get_item_tags(post_id)
-    # subjects = get_item_subjects(post_id)
+    tags = []
+    for tag in info["tags"]:
+        if tag != None:
+            tag_info = db.tags.find_one({
+                "name": tag
+            })
+            tags.append(tag_info)
+    subjects = []
+    for subject in info["subjects"]:
+        if subject != None:
+            subject_info = db.subjects.find_one({
+                "name": subject
+            })
+            subjects.append(subject_info)
     return render_template("post.html", info=info, text=text, tags=tags, subjects=subjects)
 
 
@@ -320,8 +332,22 @@ def download(page_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])
-    return render_template("download.html", info=info, text=text)
+    tags = []
+    for tag in info["tags"]:
+        if tag != None:
+            tag_info = db.tags.find_one({
+                "name": tag
+            })
+            tags.append(tag_info)
+    subjects = []
+    for subject in info["subjects"]:
+        if subject != None:
+            subject_info = db.subjects.find_one({
+                "name": subject
+            })
+            subjects.append(subject_info)
+    return render_template("download.html", info=info, text=text, tags=tags, subjects=subjects)
 
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+# if __name__ == '__main__':
+    # app.run(debug=True, host='0.0.0.0')
