@@ -254,6 +254,14 @@ def tags():
       }))
     return render_template("tags.html", tags=tags)
 
+@app.route("/downloads")
+def downloads():
+    db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
+    downloads = list(db.content.find({ 
+      "type": "downloads", 
+      }))
+    return render_template("downloads.html", downloads=downloads)
+
 
 @app.route("/about")
 def about():

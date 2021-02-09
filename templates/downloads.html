@@ -1,0 +1,66 @@
+{% extends 'base2.html' %}
+{% set active_page = "downloads" %}
+
+{% block main_title %}
+  Downloads -
+{% endblock %}
+
+{% block ogtags %}
+<meta property="og:title" content="Downloads - Dandelion">
+<meta property="og:description" content="Downloadable and printable home education resources">
+<meta property="og:image" content="https://res.cloudinary.com/curva-tech-ltd/image/upload/c_scale,w_1600/v1611071200/kathy-morales-ebbGG4a9go0-unsplash.jpg">
+<meta property="og:url" content="{{ config.BASE_URL }}/downloads">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="website"> <!-- less than 1mb -->
+{% endblock %}
+
+{% block body_class %}
+  <body class="downloads"> 
+{% endblock %}
+
+{% block content %}
+        <!-- body content -->
+
+      <div class="row">
+        <div class="col-sm post mx-3">
+          <h2 class="text-center display-3">Downloads</h2>
+
+         <div class="tag-text mx-auto">
+<p class="lead">
+  Description here
+</p>
+    
+             <ul class="list-unstyled loop">
+                 
+             {% for item in downloads|sort(attribute='date', reverse=True) %}
+                 <li class="post mt-3">
+                   <div class="post row mb-4">
+              <div class="col-sm image">
+                <a href="{{ config.BASE_URL }}/downloads/{{ download["item_id"] }}">
+                  <img src="{{ download["image"] }}" class="img-fluid mb-3" alt="{{ download["title"] }}" >
+                  </a>
+              </div>
+              <div class="col-sm text">
+                <h3 class="mt-3"><a href="{{ config.BASE_URL }}/downloads/{{ download["item_id"] }}">{{ download["title"] }}</a></h3>
+                <p class="meta text-monospace small mt-0">{{ download["date"].strftime("%-d %B %Y") }}</p>
+
+            
+                     </div>
+          </div>
+
+
+
+                </li>
+        
+             {% endfor %}
+             </ul>
+
+
+           </div>
+
+  
+
+        </div>
+      </div>
+        <!-- /end body content -->
+{% endblock %}
