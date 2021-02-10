@@ -29,27 +29,16 @@
 <p class="lead">
   This is where all the resources and printables I make go. Most of them are based on things I make for Cian or that I find useful.
 </p>
+             
+           
     
              <ul class="list-unstyled loop">
                  
              {% for item in downloads|sort(attribute='date', reverse=True) %}
-                 <li class="post mt-3">
-                   <div class="post row mb-4">
-              <div class="col-sm image">
-                <a href="{{ config.BASE_URL }}/downloads/{{ item["item_id"] }}">
-                  <img src="{{ download["image"] }}" class="img-fluid mb-3" alt="{{ item["title"] }}" >
-                  </a>
-              </div>
-              <div class="col-sm text">
-                <h3 class="mt-3"><a href="{{ config.BASE_URL }}/downloads/{{ item["item_id"] }}">{{ download["title"] }}</a></h3>
-                <p class="meta text-monospace small mt-0">{{ item["date"].strftime("%-d %B %Y") }}</p>
-
-            
-                     </div>
-          </div>
-
-
-
+                   <li class="download">
+                   <a href="{{ config.BASE_URL }}/download/{{ item["slug"] }}">
+                   {{ item["title"] }}
+                   </a>
                 </li>
         
              {% endfor %}

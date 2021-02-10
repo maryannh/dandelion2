@@ -258,7 +258,7 @@ def tags():
 def downloads():
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     downloads = list(db.content.find({ 
-      "type": "downloads", 
+      "type": "download", 
       }))
     return render_template("downloads.html", downloads=downloads)
 
