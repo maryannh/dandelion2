@@ -36,7 +36,7 @@
                  
              {% for item in downloads|sort(attribute='date', reverse=True) %}
                    <li class="download">
-                   <a href="{{ config.BASE_URL }}/download/{{ item["slug"] }}">
+                   <a href="{{ config.BASE_URL }}/download/{{ item["item_id"] }}">
                    {{ item["title"] }}
                    </a>
                 </li>
