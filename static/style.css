@@ -53,6 +53,12 @@ h3 a:hover, h3 a:visited {
         text-decoration: none;
     }
 
+/* menu */
+
+.list-inline-item i {
+  margin-bottom: 0.5rem;
+}
+
 /* post template */
 
 img.hero {
