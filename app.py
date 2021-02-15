@@ -305,7 +305,7 @@ def subject(subject):
     return render_template("taxonomy.html", content=content, info=info)
 
 @app.route("/post/<post_id>")
-def post(post_id):
+def post_id(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     # get slug
     info = db.content.find_one({"item_id": post_id})
