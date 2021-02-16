@@ -309,13 +309,13 @@ def post_id(post_id):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     # get slug
     info = db.content.find_one({"item_id": post_id})
-    path = "/post/" + info["slug"]
+    path = "/post/" + post_id + "/" + info["slug"]
     return redirect(path)
 
-@app.route("/post/<slug>")
-def post(slug):
+@app.route("/post/<post_id>/<slug>")
+def post(post_id, slug):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
-    info = db.content.find_one({"slug": slug})
+    info = db.content.find_one({"item_id": post_id})
     text = markdown(info["text"])
     tags = []
     for tag in info["tags"]:
@@ -342,8 +342,8 @@ def page(page_id):
     return render_template("page.html", info=info, text=text)
 
 
-@app.route("/download/<page_id>")
-def download(page_id):
+@app.route("/download/<page_id>/<slug>")
+def download(page_id, slug):
     db = MongoClient("mongodb+srv://admin:" + config.MONGODB_PASS + "@cluster0.mfakh.mongodb.net/blog?retryWrites=true&w=majority&?ssl=true&ssl_cert_reqs=CERT_NONE", connect=False).blog
     info = db.content.find_one({"item_id": page_id})
     text = markdown(info["text"])

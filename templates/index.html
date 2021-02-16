@@ -30,12 +30,12 @@
                  <li class="post mt-3">
                    <div class="post row mb-4">
               <div class="col-sm image">
-                  <a href="{{ config.BASE_URL }}/post/{{ item["slug"] }}">
+                  <a href="{{ config.BASE_URL }}/post/{{ item["post_id"] }}/{{ item["slug"] }}">
                 <img src="{{ item["image"] }}" class="img-fluid mb-3" alt="{{ item["title"] }}" >
                   </a>
               </div>
               <div class="col-sm text">
-                <h3 class="mt-3"><a href="{{ config.BASE_URL }}/post/{{ item["slug"] }}">{{ item["title"] }}</a></h3>
+                <h3 class="mt-3"><a href="{{ config.BASE_URL }}/post/{{ item["post_id"] }}/{{ item["slug"] }}">{{ item["title"] }}</a></h3>
                 <p class="meta text-monospace small mt-0">{{ item["date"].strftime("%-d %B %Y") }}</p>
 
             
@@ -59,7 +59,7 @@
 
 
                  <li class="download">
-                   <span class="badge badge-secondary">{{ item["type"]|capitalize }}</span> <a href="{{ config.BASE_URL }}/download/{{ item["slug"] }}">
+                   <span class="badge badge-secondary">{{ item["type"]|capitalize }}</span> <a href="{{ config.BASE_URL }}/download/{{ item["item_id"] }}/{{ item["slug"] }}">
                    {{ item["title"] }}
                    </a>
                 </li>
