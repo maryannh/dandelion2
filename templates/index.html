@@ -47,7 +47,10 @@
                 </li>
               {% endif %}
               {% if item["type"] == "link" %}
-                 <li class="link"> <span class="badge badge-secondary">{{ item["type"]|capitalize }}</span> 
+                 <li class="link"> 
+                   <span class="badge badge-info">
+                    <i class="bi-download"></i> {{ item["type"]|capitalize }}
+                    </span> 
                    <a href="{{ item["text"] }}">
                    {{ item["title"] }}
                    
@@ -59,7 +62,8 @@
 
 
                  <li class="download">
-                   <span class="badge badge-secondary">{{ item["type"]|capitalize }}</span> <a href="{{ config.BASE_URL }}/download/{{ item["slug"] }}">
+                   <span class="badge badge-success">
+                    <i class="bi-link"></i> {{ item["type"]|capitalize }}</span> <a href="{{ config.BASE_URL }}/download/{{ item["slug"] }}">
                    {{ item["title"] }}
                    </a>
                 </li>
