@@ -363,6 +363,10 @@ def download(page_id, slug):
             subjects.append(subject_info)
     return render_template("download.html", info=info, text=text, tags=tags, subjects=subjects)
 
+@app.route("/testing/html")
+def testing():
+    return render_template("html_testing.html")
+
 
 # if __name__ == '__main__':
     # app.run(debug=True, host='0.0.0.0')
